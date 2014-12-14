@@ -45,20 +45,20 @@ private slots:
     void on_pushButtonAddCode_clicked();
 
     /* sina http slot */
-    void on_sinaHttpDone(bool);
-    void on_sinaDataReadProgress(int,int);
-    void on_sinaReadyRead(QByteArray);
+    void slot_sinaHttpDone(bool);
+    void slot_sinaDataReadProgress(int,int);
+    void slot_sinaReadyRead(QByteArray);
 
-    void onSysTimeFreshed();
-    void onIdbChanged();
+    void slot_sysTimeFreshed();
+    void slot_idbChanged();
     void on_actionAbout_triggered();
 
-    void on_action_SaveWatchList_triggered();
+    void slot_runtimeDelAction();
+    void slot_runtimeTopAction();
+    void slot_runtimeHlAction();
+    void slot_tblCustomContextMenuRequested(QPoint);
 
-    void on_runtimeDelAction();
-    void on_runtimeTopAction();
-    void on_runtimeHlAction();
-    void on_tblCustomContextMenuRequested(QPoint);
+    void on_action_SaveWatchList_triggered();
 private:
     Ui::QStockMainWindows *ui;
     int fetchCnt;

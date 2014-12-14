@@ -22,7 +22,7 @@ public:
     void fetchStockData();
 private slots:
     /* sina http slot */
-    void on_httpDone(bool);
+    void slot_httpDone(bool);
     void on_dataReadProgress(int,int);
     void on_readyRead(QHttpResponseHeader);
     // QThread interface

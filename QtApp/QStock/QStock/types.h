@@ -45,16 +45,6 @@ typedef signed long     s32;
 #define PUBLIC
 #define LOCAL   static
 
-typedef unsigned long       DWORD;
-typedef unsigned long       LONG;
-typedef int                 BOOL;
-typedef unsigned char       BYTE;
-typedef unsigned short      WORD;
-typedef float               FLOAT;
-typedef int                 INT;
-typedef unsigned int        UINT;
-
-
 /* Log Level*/
 typedef enum LOG_DEBUG_LEVEL_STRUCT{
     LOG_DEBUG_LEVEL_FATAL=1,

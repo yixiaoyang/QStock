@@ -9,13 +9,13 @@ QHttpAgent::QHttpAgent(QString m_host)
     http->setHost(host);
     url=QString("http://hq.sinajs.cn");
 
-    connect(http, SIGNAL(done(bool)),this, SLOT(on_httpDone(bool)));
+    connect(http, SIGNAL(done(bool)),this, SLOT(slot_httpDone(bool)));
     connect(http, SIGNAL(dataReadProgress(int,int)),this, SLOT(on_dataReadProgress(int,int)));
     connect(http, SIGNAL(readyRead(QHttpResponseHeader)),this, SLOT(on_readyRead(QHttpResponseHeader)));
 
 }
 
-void QHttpAgent::on_httpDone(bool done)
+void QHttpAgent::slot_httpDone(bool done)
 {
     emit httpDone(done);
 }

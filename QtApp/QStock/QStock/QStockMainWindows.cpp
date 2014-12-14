@@ -32,16 +32,16 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     ui->progressBar->setMaximum(100);
     ui->progressBar->setValue(fetchCnt);
 
-    connect(&stock_data,SIGNAL(sig_idbChanged()),this,SLOT(onIdbChanged()));
+    connect(&stock_data,SIGNAL(sig_idbChanged()),this,SLOT(slot_idbChanged()));
 
     sysTimer = new QTimer(this);
-    connect(sysTimer,SIGNAL(timeout()),this,SLOT(onSysTimeFreshed()));
+    connect(sysTimer,SIGNAL(timeout()),this,SLOT(slot_sysTimeFreshed()));
     sysTimer->start(view_setting.sysTimerMsec); /*5s*/
 
     sinaAgent = new QHttpAgent("http://hq.sinajs.cn");
-    connect(sinaAgent, SIGNAL(httpDone(bool)),this, SLOT(on_sinaHttpDone(bool)));
-    connect(sinaAgent, SIGNAL(dataReadProgress(int,int)),this, SLOT(on_sinaDataReadProgress(int,int)));
-    connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(on_sinaReadyRead(QByteArray)));
+    connect(sinaAgent, SIGNAL(httpDone(bool)),this, SLOT(slot_sinaHttpDone(bool)));
+    connect(sinaAgent, SIGNAL(dataReadProgress(int,int)),this, SLOT(slot_sinaDataReadProgress(int,int)));
+    connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(slot_sinaReadyRead(QByteArray)));
 
     ui->runtimeTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     runtimePopMenu = new QMenu(ui->runtimeTableWidget);
@@ -53,15 +53,15 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     runtimeDelAction->setIcon(QIcon(":/main/icons/del.png"));
     runtimeHlAction->setIcon(QIcon(":/main/icons/highlight.png"));
 
-    connect(runtimeTopAction,SIGNAL(triggered()),this,SLOT(on_runtimeTopAction()));
-    connect(runtimeDelAction,SIGNAL(triggered()),this,SLOT(on_runtimeDelAction()));
-    connect(runtimeHlAction,SIGNAL(triggered()),this,SLOT(on_runtimeHlAction()));
+    connect(runtimeTopAction,SIGNAL(triggered()),this,SLOT(slot_runtimeTopAction()));
+    connect(runtimeDelAction,SIGNAL(triggered()),this,SLOT(slot_runtimeDelAction()));
+    connect(runtimeHlAction,SIGNAL(triggered()),this,SLOT(slot_runtimeHlAction()));
 
     runtimePopMenu->addAction(runtimeDelAction);
     runtimePopMenu->addAction(runtimeTopAction);
     runtimePopMenu->addAction(runtimeHlAction);
 
-    connect(ui->runtimeTableWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(on_tblCustomContextMenuRequested(QPoint)));
+    connect(ui->runtimeTableWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(slot_tblCustomContextMenuRequested(QPoint)));
 
     updateURI();
     fetchStockData();
@@ -205,12 +205,12 @@ void QStockMainWindows::on_pushButtonAddCode_clicked()
     }
 }
 
-void QStockMainWindows::on_sinaHttpDone(bool )
+void QStockMainWindows::slot_sinaHttpDone(bool )
 {
 
 }
 
-void QStockMainWindows::on_sinaDataReadProgress(int , int )
+void QStockMainWindows::slot_sinaDataReadProgress(int , int )
 {
     if((fetchCnt++) > ui->progressBar->maximum() ){
         fetchCnt = 1;
@@ -219,7 +219,7 @@ void QStockMainWindows::on_sinaDataReadProgress(int , int )
     ui->statusBar->showMessage(QString("Fetched ")+QString::number(fetchCnt)+" times");
 }
 
-void QStockMainWindows::on_sinaReadyRead(QByteArray bytes)
+void QStockMainWindows::slot_sinaReadyRead(QByteArray bytes)
 {
     if(stock_data.updateInfo(bytes.data()) == STATUS_OK){
         updateRuntimeInfo();
@@ -228,12 +228,12 @@ void QStockMainWindows::on_sinaReadyRead(QByteArray bytes)
     }
 }
 
-void QStockMainWindows::onSysTimeFreshed()
+void QStockMainWindows::slot_sysTimeFreshed()
 {
     fetchStockData();
 }
 
-void QStockMainWindows::onIdbChanged()
+void QStockMainWindows::slot_idbChanged()
 {
     updateURI();
 }
@@ -252,7 +252,7 @@ void QStockMainWindows::on_action_SaveWatchList_triggered()
                              QMessageBox::Ok, QMessageBox::Ok);
 }
 
-void QStockMainWindows::on_runtimeDelAction()
+void QStockMainWindows::slot_runtimeDelAction()
 {
     if(lastSelRow >= 0){
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
@@ -265,7 +265,7 @@ void QStockMainWindows::on_runtimeDelAction()
     }
 }
 
-void QStockMainWindows::on_runtimeTopAction()
+void QStockMainWindows::slot_runtimeTopAction()
 {
     if(lastSelRow >= 0){
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
@@ -278,7 +278,7 @@ void QStockMainWindows::on_runtimeTopAction()
     }
 }
 
-void QStockMainWindows::on_runtimeHlAction()
+void QStockMainWindows::slot_runtimeHlAction()
 {
     if(lastSelRow >= 0){
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
@@ -296,7 +296,7 @@ void QStockMainWindows::on_runtimeHlAction()
     }
 }
 
-void QStockMainWindows::on_tblCustomContextMenuRequested(QPoint point)
+void QStockMainWindows::slot_tblCustomContextMenuRequested(QPoint point)
 {
     lastSelRow = -1;
     QTableWidgetItem* selItem = ui->runtimeTableWidget->itemAt(point);
