@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QPoint>
+#include <QMutex>
 #include <QContextMenuEvent>
 #include <QTableWidgetItem>
 
@@ -36,7 +37,16 @@ public:
 private:
     enum {
         RUNTIME_COL_NAME,
-        RUNTIME_COL_KEY
+        RUNTIME_COL_KEY,
+        RUNTIME_COL_DATE,
+        RUNTIME_COL_CURRENT,
+        RUNTIME_COL_OPEN,
+        RUNTIME_COL_HIGH,
+        RUNTIME_COL_LOW,
+        RUNTIME_COL_CLOSE,
+        RUNTIME_COL_VOLUME,
+        RUNTIME_COL_ADJ,
+        RUNTIME_COL_MAX
     };
     void updateRuntimeInfo();
     void fetchStockData();

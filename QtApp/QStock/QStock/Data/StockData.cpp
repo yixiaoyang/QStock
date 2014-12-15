@@ -50,17 +50,18 @@ StockData::~StockData()
 {
 
 }
-
+/* TCP stream tcp业务层数据包分片 */
 STATUS StockData::updateInfo(const char* string)
 {
     if(!string){
         return STATUS_FAILED;
     }
+    QString name;
+    QString id;
 
     StockInfo info;
     QString str(string);
-    QString name;
-    QString id;
+    str.remove('\n');
     QStringList list = str.split(';',QString::SkipEmptyParts);
     int start = 0;
     int end = 0;
@@ -68,10 +69,12 @@ STATUS StockData::updateInfo(const char* string)
 
     memset(&info,0,sizeof(StockInfo));
 
+    mutex.lock();
     for(int cnt = 0; cnt < list.count(); cnt++){
         item = list.at(cnt);
-        if(item.length() <= l_labelPrefix.length())
+        if(item.length() <= l_labelPrefix.length()){
             continue;
+        }
         start = item.indexOf('"');
         end = item.lastIndexOf('"');
 
@@ -110,7 +113,8 @@ STATUS StockData::updateInfo(const char* string)
             info.high = tokens[SINA_ITEMS_THIGH].toDouble();
             info.low = tokens[SINA_ITEMS_TLOW].toDouble();
             info.close = tokens[SINA_ITEMS_YCLOSE].toDouble();
-            info.volume = tokens[SINA_ITEMS_VOLUME].toUInt();
+            info.volume = tokens[SINA_ITEMS_VOLUME].toDouble();
+            info.hands = tokens[SINA_ITEMS_HANDS].toInt();
             info.current = tokens[SINA_ITEMS_CURRENT].toDouble();
             if(info.open < 0.00001 && info.open > -0.00001){
                 info.adj = 0.0;
@@ -127,14 +131,20 @@ STATUS StockData::updateInfo(const char* string)
                 it.value().low = info.low;
                 it.value().close = info.close;
                 it.value().volume = info.volume;
+                it.value().hands = info.hands;
                 it.value().current = info.current;
                 it.value().adj = info.adj;
+                qDebug(id.toStdString().c_str());
             }
         }else{
             continue;
         }
     }
 
+    mutex.unlock();
+
+    qDebug(QString::number(idb.size()).toStdString().c_str());
+    qDebug(string);
     return STATUS_OK;
 }
 

@@ -111,8 +111,20 @@
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>100</number>
+           <number>120</number>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+           <bool>true</bool>
           </attribute>
           <column>
            <property name="text">
@@ -180,7 +192,7 @@
           </column>
           <column>
            <property name="text">
-            <string>Volume</string>
+            <string>Hands</string>
            </property>
            <property name="textAlignment">
             <set>AlignHCenter|AlignVCenter|AlignCenter</set>

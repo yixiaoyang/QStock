@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QVector>
 #include <QObject>
+#include <QMutex>
 
 #include "types.h"
 #include "Serialize.h"
@@ -78,7 +79,8 @@ typedef struct _StockInfo{
 
     /* last day */
     double close;
-    unsigned int volume;
+    double volume;
+    int hands;
     double adj;
 
     /* bool */
@@ -97,6 +99,8 @@ public:
         ERR_CODE_NOT_EXISTED
     };
 private:
+    QMutex mutex;
+
     string userCfgFile;
     Json::Value root;
 

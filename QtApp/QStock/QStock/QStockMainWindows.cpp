@@ -156,7 +156,7 @@ void QStockMainWindows::updateRuntimeInfo()
             item->setBackground(view_setting.hightlightBkg);
         }
 
-        item = new QTableWidgetItem(QString::number(info.volume));
+        item = new QTableWidgetItem(QString::number(info.hands));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
@@ -202,6 +202,7 @@ void QStockMainWindows::updateURI()
     /* remove last ',' */
     uri.remove(uri.length()-1,1);
     sinaAgent->uri = uri;
+    qDebug(uri.toStdString().c_str());
 }
 
 void QStockMainWindows::on_pushButtonAddCode_clicked()
