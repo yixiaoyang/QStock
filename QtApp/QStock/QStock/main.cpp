@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(QTextCodec::codecForName("GB2312"));
 
     /* TODO: */
-    test_curl_http();
+    //test_curl_http();
 
     QStockMainWindows w;
     w.show();

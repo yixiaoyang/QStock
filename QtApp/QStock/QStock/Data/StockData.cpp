@@ -115,7 +115,7 @@ STATUS StockData::updateInfo(const char* string)
             if(info.open < 0.00001 && info.open > -0.00001){
                 info.adj = 0.0;
             }else{
-                info.adj = (info.current-info.open)/info.open;
+                info.adj = (info.current-info.close)/info.close;
             }
             StockRuntimeDB::iterator it = db.find(id);
             if(it == db.end()){

@@ -121,6 +121,13 @@ void QStockMainWindows::updateRuntimeInfo()
             item->setBackground(view_setting.hightlightBkg);
         }
 
+        item = new QTableWidgetItem(QString::number(info.current,'f',2));
+        item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+        tblWidget->setItem(cnt,col++,item);
+        if(info.isHl){
+            item->setBackground(view_setting.hightlightBkg);
+        }
+
         item = new QTableWidgetItem(QString::number(info.open,'f',2));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
