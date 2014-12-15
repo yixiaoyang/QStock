@@ -8,6 +8,7 @@
 #include <QVector>
 #include <QObject>
 #include <QMutex>
+#include <sstream>
 
 #include "types.h"
 #include "Serialize.h"
@@ -106,6 +107,8 @@ private:
 
     StockRuntimeDB db;
     StockIdDB idb;
+
+    std::stringstream sinaHttpStream;
 
     void showErrorMessage(QString errStr);
 public:

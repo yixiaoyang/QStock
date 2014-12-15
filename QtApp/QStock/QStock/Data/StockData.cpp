@@ -50,7 +50,7 @@ StockData::~StockData()
 {
 
 }
-/* TCP stream tcp业务层数据包分片 */
+
 STATUS StockData::updateInfo(const char* string)
 {
     if(!string){
@@ -61,7 +61,6 @@ STATUS StockData::updateInfo(const char* string)
 
     StockInfo info;
     QString str(string);
-    str.remove('\n');
     QStringList list = str.split(';',QString::SkipEmptyParts);
     int start = 0;
     int end = 0;
@@ -69,7 +68,6 @@ STATUS StockData::updateInfo(const char* string)
 
     memset(&info,0,sizeof(StockInfo));
 
-    mutex.lock();
     for(int cnt = 0; cnt < list.count(); cnt++){
         item = list.at(cnt);
         if(item.length() <= l_labelPrefix.length()){
@@ -134,17 +132,12 @@ STATUS StockData::updateInfo(const char* string)
                 it.value().hands = info.hands;
                 it.value().current = info.current;
                 it.value().adj = info.adj;
-                qDebug(id.toStdString().c_str());
             }
         }else{
             continue;
         }
     }
 
-    mutex.unlock();
-
-    qDebug(QString::number(idb.size()).toStdString().c_str());
-    qDebug(string);
     return STATUS_OK;
 }
 

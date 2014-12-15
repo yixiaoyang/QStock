@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>949</width>
-    <height>423</height>
+    <width>1016</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,56 +23,316 @@
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="spacing">
-       <number>0</number>
+     <widget class="QSplitter" name="splitter">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <item>
-       <widget class="QLineEdit" name="lineEditAddCode">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QToolBox" name="toolBox">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>120</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="tabSpacing">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="page_watching">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>118</width>
+          <height>506</height>
+         </rect>
         </property>
+        <attribute name="icon">
+         <iconset resource="resources/iconRes.qrc">
+          <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Mine</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>自选</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/myFavirate.png</normaloff>:/main/icons/myFavirate.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="text">
+            <string>持仓</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/add.png</normaloff>:/main/icons/add.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_4">
+           <property name="text">
+            <string>日历</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/calendar.png</normaloff>:/main/icons/calendar.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_5">
+           <property name="text">
+            <string>修养</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/notes.png</normaloff>:/main/icons/notes.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>339</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonAddCode">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
+       <widget class="QWidget" name="page_quote">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>118</width>
+          <height>506</height>
+         </rect>
         </property>
-        <property name="text">
-         <string>加自选</string>
-        </property>
+        <attribute name="icon">
+         <iconset resource="resources/iconRes.qrc">
+          <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Quote</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="pushButton_11">
+           <property name="text">
+            <string>大盘</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="text">
+            <string>排行</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_7">
+           <property name="text">
+            <string>新股</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_9">
+           <property name="text">
+            <string>私募</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_10">
+           <property name="text">
+            <string>全球</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_12">
+           <property name="text">
+            <string>汇市</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/main_logo.png</normaloff>:/main/icons/main_logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>257</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QStackedWidget" name="stackedWidget">
-      <widget class="QWidget" name="page_runtime">
-       <layout class="QVBoxLayout" name="verticalLayout">
+      </widget>
+      <widget class="QFrame" name="frame_runtime">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -89,128 +349,197 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QTableWidget" name="runtimeTableWidget">
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropOverwriteMode">
-           <bool>false</bool>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::MoveAction</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="sortingEnabled">
-           <bool>true</bool>
-          </property>
-          <attribute name="horizontalHeaderCascadingSectionResizes">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>120</number>
-          </attribute>
-          <attribute name="horizontalHeaderStretchLastSection">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="verticalHeaderCascadingSectionResizes">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-           <bool>true</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Code</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Date</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Current</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Open</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>High</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Low</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Close</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Hands</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Adjust</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
+          <item>
+           <widget class="QLineEdit" name="lineEditAddCode">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="accessibleName">
+             <string/>
+            </property>
+            <property name="placeholderText">
+             <string>输入单个股票代码如'sz002065'，按回车或者右边加自选按钮添加</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonAddCode">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>加自选</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/iconRes.qrc">
+              <normaloff>:/main/icons/add.png</normaloff>:/main/icons/add.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>16</width>
+              <height>16</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="stackedWidget">
+          <widget class="QWidget" name="page_runtime">
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QTableWidget" name="runtimeTableWidget">
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="dragEnabled">
+               <bool>true</bool>
+              </property>
+              <property name="dragDropOverwriteMode">
+               <bool>false</bool>
+              </property>
+              <property name="defaultDropAction">
+               <enum>Qt::MoveAction</enum>
+              </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+              <attribute name="horizontalHeaderCascadingSectionResizes">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>100</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="verticalHeaderCascadingSectionResizes">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Name</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Code</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Date</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Current</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Open</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>High</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Low</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Close</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Hands</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Adjust</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="page_selectData"/>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_selectData"/>
      </widget>
     </item>
     <item>
@@ -239,8 +568,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>949</width>
-     <height>22</height>
+     <width>1016</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_O">

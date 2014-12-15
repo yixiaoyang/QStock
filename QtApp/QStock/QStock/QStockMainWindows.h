@@ -10,6 +10,7 @@
 #include <QMutex>
 #include <QContextMenuEvent>
 #include <QTableWidgetItem>
+#include <QTextStream>
 
 #include "Data/StockData.h"
 #include "Data/HistoryDB.h"
@@ -96,6 +97,10 @@ private:
     // QWidget interface
 protected:
     void contextMenuEvent(QContextMenuEvent *);
+
+    // QWidget interface
+protected:
+    void keyPressEvent(QKeyEvent *);
 };
 
 #endif // QSTOCKMAINWINDOWS_H

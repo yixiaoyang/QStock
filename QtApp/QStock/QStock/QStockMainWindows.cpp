@@ -38,7 +38,7 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(sysTimer,SIGNAL(timeout()),this,SLOT(slot_sysTimeFreshed()));
     sysTimer->start(view_setting.sysTimerMsec); /*5s*/
 
-    sinaAgent = new QHttpAgent("http://hq.sinajs.cn");
+    sinaAgent = new QHttpAgent("hq.sinajs.cn");
     connect(sinaAgent, SIGNAL(httpDone(bool)),this, SLOT(slot_sinaHttpDone(bool)));
     connect(sinaAgent, SIGNAL(dataReadProgress(int,int)),this, SLOT(slot_sinaDataReadProgress(int,int)));
     connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(slot_sinaReadyRead(QByteArray)));
@@ -202,13 +202,13 @@ void QStockMainWindows::updateURI()
     /* remove last ',' */
     uri.remove(uri.length()-1,1);
     sinaAgent->uri = uri;
-    qDebug(uri.toStdString().c_str());
 }
 
 void QStockMainWindows::on_pushButtonAddCode_clicked()
 {
     QString id = ui->lineEditAddCode->text();
     if(stock_data.addId(id) == STATUS_OK){
+        ui->lineEditAddCode->clear();
         fetchStockData();
     }
 }
@@ -318,4 +318,18 @@ void QStockMainWindows::contextMenuEvent(QContextMenuEvent *event)
 {
     return QMainWindow::contextMenuEvent(event);
 
+}
+
+
+void QStockMainWindows::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Return)
+    {
+        QWidget* focuedWidget = this->focusWidget();
+        if(qobject_cast<QLineEdit*>(focuedWidget)){
+            ui->pushButtonAddCode->click();
+        }
+    }
+
+    return QMainWindow::keyPressEvent(event);
 }

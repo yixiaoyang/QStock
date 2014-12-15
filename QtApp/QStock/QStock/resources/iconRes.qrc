@@ -1,8 +1,13 @@
 <RCC>
     <qresource prefix="/main">
-        <file>icons/main_logo.png</file>
+        <file>icons/add.png</file>
+        <file>icons/calendar.png</file>
         <file>icons/del.png</file>
-        <file>icons/top.png</file>
         <file>icons/highlight.png</file>
+        <file>icons/list.png</file>
+        <file>icons/main_logo.png</file>
+        <file>icons/notes.png</file>
+        <file>icons/top.png</file>
+        <file>icons/myFavirate.png</file>
     </qresource>
 </RCC>

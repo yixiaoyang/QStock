@@ -17,6 +17,9 @@ private:
 public:
     QString uri;
 
+    char sep;
+    QByteArray buffer;
+
     QHttpAgent(QString host="");
 
     void fetchStockData();

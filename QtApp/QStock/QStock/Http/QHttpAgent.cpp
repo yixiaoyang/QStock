@@ -3,16 +3,16 @@
 QHttpAgent::QHttpAgent(QString m_host)
 {
     this->host = m_host;
+    sep = '\n';
 
     http = new QHttp(this);
     /*"http://hq.sinajs.cn"*/
     http->setHost(host);
-    url=QString("http://hq.sinajs.cn");
+    url=QString(m_host);
 
     connect(http, SIGNAL(done(bool)),this, SLOT(slot_httpDone(bool)));
     connect(http, SIGNAL(dataReadProgress(int,int)),this, SLOT(on_dataReadProgress(int,int)));
     connect(http, SIGNAL(readyRead(QHttpResponseHeader)),this, SLOT(on_readyRead(QHttpResponseHeader)));
-
 }
 
 void QHttpAgent::slot_httpDone(bool done)
@@ -27,8 +27,13 @@ void QHttpAgent::on_dataReadProgress(int done, int total)
 
 void QHttpAgent::on_readyRead(QHttpResponseHeader )
 {
-    QByteArray bytes=http->readAll();
-    emit readyRead(bytes);
+    int lastSep = 0;
+    buffer.append(http->readAll());
+    lastSep = buffer.lastIndexOf(sep);
+    if(lastSep > 0){
+        emit readyRead(buffer.left(lastSep+1));
+        buffer.remove(0,lastSep+1);
+    }
 }
 
 void QHttpAgent::fetchStockData()
@@ -45,7 +50,7 @@ void QHttpAgent::fetchStockData()
 void QHttpAgent::run()
 {
     QHttpRequestHeader header("GET",uri);
-    header.setValue("Host", "hq.sinajs.cn");
-    http->setHost("hq.sinajs.cn");
+    header.setValue("Host", host);
+    http->setHost(host);
     http->request(header);
 }
