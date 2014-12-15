@@ -15,9 +15,14 @@ include(./lib/jsoncpp/jsoncpp.pri)
 win32{
     LIBS += -L  $${PWD}\lib\curl
     LIBS +=  -DCURL_STATICLIB -lcurl  -lws2_32 -lwldap32
-    INCLUDEPATH += ./lib/curl/include
-    DEFINES += CURL_STATICLIB
 }
+unix{
+    LIBS += -L  $${PWD}\lib\curl\linux
+    LIBS +=  -DCURL_STATICLIB -lcurl
+}
+INCLUDEPATH += ./lib/curl/include
+DEFINES += CURL_STATICLIB
+
 SOURCES += main.cpp\
     QStockMainWindows.cpp \
     Data/StockData.cpp \
