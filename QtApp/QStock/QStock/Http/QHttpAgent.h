@@ -5,6 +5,7 @@
 #include <QHttp>
 #include <QString>
 #include <QByteArray>
+#include "Data/StockData.h"
 
 class QHttpAgent : public QThread
 {
@@ -14,15 +15,21 @@ private:
     QString url;
     QString host;
 
+    StockIdDB* idb;
+    int eachFetchCnt;
+    void updateUri();
 public:
     QString uri;
 
     char sep;
+
     QByteArray buffer;
 
     QHttpAgent(QString host="");
 
-    void fetchStockData();
+    STATUS fetchStockData();
+
+    void setIdb(StockIdDB *value);
 private slots:
     /* sina http slot */
     void slot_httpDone(bool);

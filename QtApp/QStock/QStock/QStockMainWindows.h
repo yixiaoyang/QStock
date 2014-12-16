@@ -21,6 +21,7 @@ typedef struct _ViewSetting{
     QColor falling;
     QColor hightlightBkg;
     QColor topBkg;
+    int urlArrayCnt;
     int sysTimerMsec;
 }ViewSetting;
 
@@ -73,8 +74,6 @@ private slots:
 private:
     Ui::QStockMainWindows *ui;
     int fetchCnt;
-
-    QString uri;
 
     /* DB */
     StockData stock_data;

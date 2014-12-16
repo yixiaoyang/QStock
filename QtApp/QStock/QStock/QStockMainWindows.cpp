@@ -25,6 +25,7 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     view_setting.rising = Qt::red;
     view_setting.hightlightBkg = Qt::yellow;
     view_setting.topBkg = Qt::darkGreen;
+    view_setting.urlArrayCnt = 5;
     view_setting.sysTimerMsec = 5000;
 
     lastSelRow = -1;
@@ -42,6 +43,7 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(sinaAgent, SIGNAL(httpDone(bool)),this, SLOT(slot_sinaHttpDone(bool)));
     connect(sinaAgent, SIGNAL(dataReadProgress(int,int)),this, SLOT(slot_sinaDataReadProgress(int,int)));
     connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(slot_sinaReadyRead(QByteArray)));
+    sinaAgent->setIdb(stock_data.getIDB());
 
     ui->runtimeTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     runtimePopMenu = new QMenu(ui->runtimeTableWidget);
@@ -74,7 +76,7 @@ QStockMainWindows::~QStockMainWindows()
     delete ui;
 }
 
-/*!!! TODO:  clean these code, its not gentle !!! */
+/*!!! TODO:  clean these codes, its not gentle !!! */
 void QStockMainWindows::updateRuntimeInfo()
 {
     StockRuntimeDB* db = stock_data.getDB();
@@ -179,29 +181,13 @@ void QStockMainWindows::updateRuntimeInfo()
 
 void QStockMainWindows::fetchStockData()
 {
-    if(uri.isEmpty()){
-        return ;
-    }
     sinaAgent->fetchStockData();
 }
 
 void QStockMainWindows::updateURI()
 {
     StockIdDB* idb = stock_data.getIDB();
-    uri.clear();
-    uri=QString("/list=");
-    if(idb->isEmpty()){
-        /* 默认添加上证和深圳指数 */
-        idb->append("sz399001");
-        idb->append("sh000001");
-    }
-
-    for(int cnt = 0; cnt < idb->count(); cnt++){
-        uri = uri+idb->at(cnt)+",";
-    }
-    /* remove last ',' */
-    uri.remove(uri.length()-1,1);
-    sinaAgent->uri = uri;
+    sinaAgent->setIdb(idb);
 }
 
 void QStockMainWindows::on_pushButtonAddCode_clicked()
