@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1016</width>
-    <height>641</height>
+    <width>1052</width>
+    <height>656</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,10 +20,30 @@
   <property name="styleSheet">
    <string notr="true">#centralWidget{
 	color:#FFFFFF;
+}
+#widget_quoteWaves{
+	border-width:1px;
+	border-style:solid;
+	border-color: rgb(200, 200, 200);
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
+    <property name="spacing">
+     <number>2</number>
+    </property>
+    <property name="leftMargin">
+     <number>4</number>
+    </property>
+    <property name="topMargin">
+     <number>4</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
+    <property name="bottomMargin">
+     <number>4</number>
+    </property>
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="frameShape">
@@ -66,7 +86,7 @@
           <x>0</x>
           <y>0</y>
           <width>118</width>
-          <height>506</height>
+          <height>535</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -93,7 +113,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_myWatching">
            <property name="text">
             <string>自选</string>
            </property>
@@ -110,7 +130,24 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="pushButton_detailQuotes">
+           <property name="text">
+            <string>分析</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources/iconRes.qrc">
+             <normaloff>:/main/icons/waves.png</normaloff>:/main/icons/waves.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_Position">
            <property name="text">
             <string>持仓</string>
            </property>
@@ -181,7 +218,7 @@
           <x>0</x>
           <y>0</y>
           <width>118</width>
-          <height>506</height>
+          <height>535</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -349,52 +386,6 @@
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLineEdit" name="lineEditAddCode">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="accessibleName">
-             <string/>
-            </property>
-            <property name="placeholderText">
-             <string>输入单个股票代码如'sz002065'，按回车或者右边加自选按钮添加</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonAddCode">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>加自选</string>
-            </property>
-            <property name="icon">
-             <iconset resource="resources/iconRes.qrc">
-              <normaloff>:/main/icons/add.png</normaloff>:/main/icons/add.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>16</width>
-              <height>16</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
          <widget class="QStackedWidget" name="stackedWidget">
           <widget class="QWidget" name="page_runtime">
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -413,6 +404,52 @@
             <property name="bottomMargin">
              <number>0</number>
             </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLineEdit" name="lineEditAddCode">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="accessibleName">
+                 <string/>
+                </property>
+                <property name="placeholderText">
+                 <string>输入单个股票代码如'sz002065'，按回车或者右边加自选按钮添加</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonAddCode">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>加自选</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources/iconRes.qrc">
+                  <normaloff>:/main/icons/add.png</normaloff>:/main/icons/add.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>16</width>
+                  <height>16</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
             <item>
              <widget class="QTableWidget" name="runtimeTableWidget">
               <property name="frameShape">
@@ -531,11 +568,203 @@
                 <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                </property>
               </column>
+              <column>
+               <property name="text">
+                <string>detail</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
              </widget>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="page_selectData"/>
+          <widget class="QWidget" name="page_detail">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="widget" native="true">
+              <layout class="QVBoxLayout" name="verticalLayout_7">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="widget_wavesHeader" native="true">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_watchList">
+                    <property name="maxVisibleItems">
+                     <number>30</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_wavesDatetome">
+                    <item>
+                     <property name="text">
+                      <string>1 Year</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>2 Year</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>3 Month</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>1 Month</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QQuoteWavesWidget" name="widget_quoteWaves" native="true"/>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_wavesfooter" native="true">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="pushButton">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_3">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_6">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_8">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_13">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_14">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_15">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_16">
+                    <property name="text">
+                     <string>PushButton</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="page_positions"/>
          </widget>
         </item>
        </layout>
@@ -568,7 +797,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1016</width>
+     <width>1052</width>
      <height>21</height>
     </rect>
    </property>
@@ -606,6 +835,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QQuoteWavesWidget</class>
+   <extends>QWidget</extends>
+   <header>./Widget/QQuoteWavesWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources/iconRes.qrc"/>
  </resources>

@@ -1,31 +1,18 @@
-#include "QHttpAgent.h"
+#include "QSinaHttpAgent.h"
 
-void QHttpAgent::setIdb(StockIdDB *value)
+void QSinaHttpAgent::setIdb(StockIdDB *value)
 {
     idb = value;
-    updateUri();
-}
-
-void QHttpAgent::updateUri()
-{
     if(idb){
-        uri.clear();
-        uri=QString("/list=");
         if(idb->isEmpty()){
             /* 默认添加上证和深圳指数 */
             idb->append("sz399001");
             idb->append("sh000001");
         }
-
-        for(int cnt = 0; cnt < idb->count(); cnt++){
-            uri = uri+idb->at(cnt)+",";
-        }
-        /* remove last ',' */
-        uri.remove(uri.length()-1,1);
     }
 }
 
-QHttpAgent::QHttpAgent(QString m_host)
+QSinaHttpAgent::QSinaHttpAgent(QString m_host)
 {
     host = m_host;
     sep = '\n';
@@ -41,17 +28,17 @@ QHttpAgent::QHttpAgent(QString m_host)
     connect(http, SIGNAL(readyRead(QHttpResponseHeader)),this, SLOT(on_readyRead(QHttpResponseHeader)));
 }
 
-void QHttpAgent::slot_httpDone(bool done)
+void QSinaHttpAgent::slot_httpDone(bool done)
 {
     emit httpDone(done);
 }
 
-void QHttpAgent::on_dataReadProgress(int done, int total)
+void QSinaHttpAgent::on_dataReadProgress(int done, int total)
 {
     emit dataReadProgress(done,total);
 }
 
-void QHttpAgent::on_readyRead(QHttpResponseHeader )
+void QSinaHttpAgent::on_readyRead(QHttpResponseHeader )
 {
     int lastSep = 0;
     buffer.append(http->readAll());
@@ -62,7 +49,7 @@ void QHttpAgent::on_readyRead(QHttpResponseHeader )
     }
 }
 
-STATUS QHttpAgent::fetchStockData()
+STATUS QSinaHttpAgent::fetchStockData()
 {
     if(!idb){
         return STATUS_NULL;
@@ -77,7 +64,7 @@ STATUS QHttpAgent::fetchStockData()
     return STATUS_OK;
 }
 
-void QHttpAgent::run()
+void QSinaHttpAgent::run()
 {
     int left = idb->size();
     int size = idb->size();

@@ -14,7 +14,7 @@
 
 #include "Data/StockData.h"
 #include "Data/HistoryDB.h"
-#include "Http/QHttpAgent.h"
+#include "Http/QSinaHttpAgent.h"
 
 typedef struct _ViewSetting{
     QColor rising;
@@ -50,9 +50,15 @@ private:
         RUNTIME_COL_ADJ,
         RUNTIME_COL_MAX
     };
+    enum{
+        STACK_WIDGET_INDEX_WATCHING,
+        STACK_WIDGET_INDEX_DETAILS,
+        STACK_WIDGET_INDEX_POSITIONS,
+        STACK_WIDGET_INDEX_CALENDAR,
+        STACK_WIDGET_INDEX_NOTES
+    };
     void updateRuntimeInfo();
     void fetchStockData();
-    void updateURI();
 private slots:
     void on_pushButtonAddCode_clicked();
 
@@ -63,14 +69,19 @@ private slots:
 
     void slot_sysTimeFreshed();
     void slot_idbChanged();
-    void on_actionAbout_triggered();
 
     void slot_runtimeDelAction();
     void slot_runtimeTopAction();
     void slot_runtimeHlAction();
+    void slot_runtimeDetailAction();
     void slot_tblCustomContextMenuRequested(QPoint);
 
     void on_action_SaveWatchList_triggered();
+    void on_pushButton_myWatching_clicked();
+    void on_pushButton_detailQuotes_clicked();
+    void on_pushButton_Position_clicked();
+    void on_actionAbout_triggered();
+
 private:
     Ui::QStockMainWindows *ui;
     int fetchCnt;
@@ -84,13 +95,14 @@ private:
     QTimer* sysTimer;
 
     /* httpAgent */
-    QHttpAgent* sinaAgent;
+    QSinaHttpAgent* sinaAgent;
 
     /* runtime info menu */
     QMenu *runtimePopMenu;
     QAction *runtimeDelAction;
     QAction *runtimeTopAction;
     QAction *runtimeHlAction;
+    QAction *runtimeDetailAction;
     int lastSelRow;
 
     // QWidget interface

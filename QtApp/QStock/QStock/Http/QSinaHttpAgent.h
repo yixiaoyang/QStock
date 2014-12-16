@@ -7,7 +7,7 @@
 #include <QByteArray>
 #include "Data/StockData.h"
 
-class QHttpAgent : public QThread
+class QSinaHttpAgent : public QThread
 {
     Q_OBJECT
 private:
@@ -25,7 +25,7 @@ public:
 
     QByteArray buffer;
 
-    QHttpAgent(QString host="");
+    QSinaHttpAgent(QString host="");
 
     STATUS fetchStockData();
 

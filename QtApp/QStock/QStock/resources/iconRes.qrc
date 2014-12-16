@@ -9,5 +9,9 @@
         <file>icons/notes.png</file>
         <file>icons/top.png</file>
         <file>icons/myFavirate.png</file>
+        <file>icons/detail.png</file>
+        <file>icons/data.png</file>
+        <file>icons/waves.png</file>
+        <file>icons/stock-ymd.png</file>
     </qresource>
 </RCC>
