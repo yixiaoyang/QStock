@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Data/StockData.h"
 #include "Dialog/AboutDialog.h"
+#include "Quote/DateRange.h"
 
 QStockMainWindows::QStockMainWindows(QWidget *parent) :
     QMainWindow(parent),
@@ -45,6 +46,8 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(slot_sinaReadyRead(QByteArray)));
     sinaAgent->setIdb(stock_data.getIDB());
 
+    yahooAgent = new YahooHttpAgent;
+
     ui->runtimeTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     runtimePopMenu = new QMenu(ui->runtimeTableWidget);
     runtimeTopAction = new QAction("Place On Top ",this);
@@ -75,7 +78,9 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
 QStockMainWindows::~QStockMainWindows()
 {
     sinaAgent->terminate();
-    sinaAgent->wait(500);
+    sinaAgent->wait(200);
+    yahooAgent->terminate();
+    yahooAgent->wait(200);
 
     stock_data.saveUserConfig();
     delete sinaAgent;
@@ -320,7 +325,11 @@ void QStockMainWindows::slot_runtimeDetailAction()
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
             QTableWidgetItem* item = ui->runtimeTableWidget->item(lastSelRow,RUNTIME_COL_KEY);
             if(item){
+                QDateTime date_end = QDateTime::currentDateTime();
+                QDateTime date_start = date_end.addDays(0-YEAR_1);
+                DateRange rang(date_start.date(),date_end.date());
                 /* show detail */
+                yahooAgent->downloadQuotes(item->text(),rang);
             }
         }
     }

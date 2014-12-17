@@ -14,7 +14,7 @@ QMAKE_CXXFLAGS += -std=c++11
 CONFIG += c++11
 
 include(./lib/jsoncpp/jsoncpp.pri)
-include(./lib/quote/src/quote.pri)
+#include(./lib/quote/src/quote.pri)
 
 
 win32{
@@ -34,36 +34,30 @@ SOURCES += main.cpp\
     Data/StockData.cpp \
     Data/Serialize.cpp \
     Data/HistoryDB.cpp \
-    Http/QHttpAgent.cpp \
     Dialog/AboutDialog.cpp \
     Http/CurlHttpAgent.cpp \
-#    quote/string_util.cpp \
-#    quote/Exception.cpp \
-#    quote/curl_util.cpp \
-#    quote/core.cpp \
-#    quote/conversion.cpp
+    Http/QSinaHttpAgent.cpp \
+    Widget/QQuoteWavesWidget.cpp \
+    Http/YahooHttpAgent.cpp \
+    Quote/QuoteTools.cpp \
+    Quote/DateRange.cpp
 
 HEADERS  += QStockMainWindows.h \
     types.h\
     Data/StockData.h \
     Data/Serialize.h \
     Data/HistoryDB.h \
-    Http/QHttpAgent.h \
     Dialog/AboutDialog.h \
     Http/CurlHttpAgent.h \
-#    quote/string_util.h \
-#    quote/RangeType.h \
-#    quote/QuoteTypeWrapper.h \
-#    quote/QuoteType.h \
-#    quote/quote.h \
-#    quote/MultipleInheritancePack.h \
-#    quote/Exception.h \
-#    quote/curl_util.h \
-#    quote/core.h \
-#    quote/conversion.h
+    Http/QSinaHttpAgent.h \
+    Widget/QQuoteWavesWidget.h \
+    Http/YahooHttpAgent.h \
+    Quote/QuoteTools.h \
+    Quote/DateRange.h
 
 FORMS    += QStockMainWindows.ui \
-    Dialog/AboutDialog.ui
+    Dialog/AboutDialog.ui \
+    Widget/qquotewaveswidget.ui
 
 RESOURCES += \
     resources/iconRes.qrc

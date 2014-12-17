@@ -217,8 +217,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>118</width>
-          <height>535</height>
+          <width>98</width>
+          <height>246</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -457,6 +457,9 @@
               </property>
               <property name="frameShadow">
                <enum>QFrame::Plain</enum>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
               </property>
               <property name="dragEnabled">
                <bool>true</bool>

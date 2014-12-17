@@ -19,16 +19,14 @@ private:
     int eachFetchCnt;
     void updateUri();
 public:
+    QSinaHttpAgent(QString host="");
+    ~QSinaHttpAgent();
+
     QString uri;
-
     char sep;
-
     QByteArray buffer;
 
-    QSinaHttpAgent(QString host="");
-
     STATUS fetchStockData();
-
     void setIdb(StockIdDB *value);
 private slots:
     /* sina http slot */

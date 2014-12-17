@@ -13,7 +13,7 @@ CurlHttpAgent::CurlHttpAgent()
 {
 }
 
-void CurlHttpAgent::downloadURL(char* url, const char* file){
+void CurlHttpAgent::downloadURL(const char* url, const char* file){
     CURL *curl;
     CURLcode res;
     FILE *outfile;

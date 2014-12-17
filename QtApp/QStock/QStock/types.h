@@ -87,4 +87,13 @@ typedef int STATUS;
 
 #define SIZEOF_ARRAY(x) sizeof(x)/sizeof(x[0])
 
+enum{
+    MONTH_=30,
+    MONTH_3=MONTH_*3,
+    MONTH_6=MONTH_*6,
+    YEAR_1=365,
+    YEAR_2=YEAR_1*2,
+    YEAR_3=YEAR_1*3
+};
+
 #endif /* TYPES_H_ */

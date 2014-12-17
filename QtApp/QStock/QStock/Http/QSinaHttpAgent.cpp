@@ -28,6 +28,13 @@ QSinaHttpAgent::QSinaHttpAgent(QString m_host)
     connect(http, SIGNAL(readyRead(QHttpResponseHeader)),this, SLOT(on_readyRead(QHttpResponseHeader)));
 }
 
+QSinaHttpAgent::~QSinaHttpAgent()
+{
+    if(this->isRunning()){
+        this->terminate();
+    }
+}
+
 void QSinaHttpAgent::slot_httpDone(bool done)
 {
     emit httpDone(done);

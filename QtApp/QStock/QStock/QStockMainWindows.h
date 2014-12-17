@@ -15,6 +15,7 @@
 #include "Data/StockData.h"
 #include "Data/HistoryDB.h"
 #include "Http/QSinaHttpAgent.h"
+#include "Http/YahooHttpAgent.h"
 
 typedef struct _ViewSetting{
     QColor rising;
@@ -96,6 +97,7 @@ private:
 
     /* httpAgent */
     QSinaHttpAgent* sinaAgent;
+    YahooHttpAgent* yahooAgent;
 
     /* runtime info menu */
     QMenu *runtimePopMenu;
