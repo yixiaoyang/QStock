@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include "types.h"
 
 /* callback function for libcurl */
 size_t write_func(void *ptr, size_t size, size_t nmemb, FILE *stream)
@@ -21,7 +22,7 @@ void CurlHttpAgent::downloadURL(const char* url, const char* file){
     if(curl)
     {
         outfile = fopen(file, "w");
-        printf ( "downloading the url %s\n", url );
+        debug_print(DBG_DEBUG,"downloading the url %s\n",url);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);

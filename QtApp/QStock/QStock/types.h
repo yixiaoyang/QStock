@@ -46,17 +46,17 @@ typedef signed long     s32;
 #define LOCAL   static
 
 /* Log Level*/
-typedef enum LOG_DEBUG_LEVEL_STRUCT{
-    LOG_DEBUG_LEVEL_FATAL=1,
-    LOG_DEBUG_LEVEL_ERROR,
-    LOG_DEBUG_LEVEL_WARN,
-    LOG_DEBUG_LEVEL_INFO,
-    LOG_DEBUG_LEVEL_DEBUG,
-    LOG_DEBUG_LEVEL_TRACE,
-    LOG_DEBUG_LEVEL_ALL,
-    LOG_DEBUG_LEVEL_OFF,
-    LOG_DEBUG_LEVEL_MAX
-}LOG_DEBUG_LEVEL;
+typedef enum LOG_DBG_LEVEL_STRUCT{
+    LOG_DBG_LEVEL_FATAL=1,
+    LOG_DBG_LEVEL_ERROR,
+    LOG_DBG_LEVEL_WARN,
+    LOG_DBG_LEVEL_INFO,
+    LOG_DBG_LEVEL_DEBUG,
+    LOG_DBG_LEVEL_TRACE,
+    LOG_DBG_LEVEL_ALL,
+    LOG_DBG_LEVEL_OFF,
+    LOG_DBG_LEVEL_MAX
+}LOG_DBG_LEVEL;
 
 
 enum {
@@ -78,22 +78,36 @@ enum {
 };
 typedef int STATUS;
 
-
-
+/* Debug print */
 #define SET(where, flags)       (where) |= (flags)
 #define CLR(where, flags)       (where) &= ~(flags)
 #define ISSET(where, flags)     ((where) & (flags))
 #define ISNOTSET(where,flags)   (!(where & flags))
+#define DBG_FATEL   (0)
+#define DBG_ERROR   (1)
+#define DBG_WARN    (2)
+#define DBG_INFO    (3)
+#define DBG_DEBUG   (4)
+#define DBG_FLOW    (5)
+#define DBG_MAX     (6)
+#define debug_print(level, fmt, args...) \
+    do {    \
+        if (g_debugLevel() >= level ){ \
+            printf("[%-10s %16s] %05d: " fmt "\n", #level, __FUNCTION__ , __LINE__, ##args);\
+        }\
+    }while (0)
+PUBLIC int g_debugLevel();
+
 
 #define SIZEOF_ARRAY(x) sizeof(x)/sizeof(x[0])
 
 enum{
-    MONTH_=30,
-    MONTH_3=MONTH_*3,
-    MONTH_6=MONTH_*6,
-    YEAR_1=365,
-    YEAR_2=YEAR_1*2,
-    YEAR_3=YEAR_1*3
+    DAYS_OF_MONTH=30,
+    DAYS_OF_3MONTH=DAYS_OF_MONTH*3,
+    DAYS_OF_6MONTH=DAYS_OF_MONTH*6,
+    DAYS_OF_YEAR=365,
+    DAYS_OF_2YEAR=DAYS_OF_YEAR*2,
+    DAYS_OF_3YEAR=DAYS_OF_YEAR*3
 };
 
 #endif /* TYPES_H_ */

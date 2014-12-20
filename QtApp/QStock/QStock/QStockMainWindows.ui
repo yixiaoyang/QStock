@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>新浪A股监控</string>
+   <string>来自异次元的A股监控眼</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/iconRes.qrc">

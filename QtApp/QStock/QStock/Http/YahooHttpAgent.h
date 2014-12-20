@@ -13,6 +13,7 @@ class YahooHttpAgent : public QThread
     Q_OBJECT
 private:
     typedef struct _DownloadListItem{
+        QString symbol;
         QString url;
         QString filename;
     }DownloadListItem;
@@ -23,18 +24,16 @@ private:
     QList<DownloadListItem> downloadList;
 
     CurlHttpAgent curl;
-    void appendToDownloadList(QString& url, QString& filename);
+    void appendToDownloadList(QString symbol, QString& url, QString& filename);
 public:
     YahooHttpAgent();
     ~YahooHttpAgent();
 
-    STATUS downloadQuotes(QString key, DateRange &rang);
+    STATUS downloadQuotes(QString symbol, DateRange &rang);
 protected:
     void run();
-private slots:
-    void slot_downloadDone(int);
 signals:
-    void downloadDone(int);
+    void downloadDone(QString,QString);
 };
 
 #endif // YAHOOHTTPAGENT_H

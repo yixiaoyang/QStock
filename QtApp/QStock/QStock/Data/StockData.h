@@ -15,7 +15,6 @@
 
 using namespace std;
 
-#define USERCONFIG_FILE     "user.conf"
 #define STOCK_DATE_LEN      (16)
 #define STOCK_ID_LEN        (16)
 #define STOCK_NAME_LEN      (32)
@@ -93,6 +92,7 @@ typedef QVector<QString> StockIdDB;
 
 class StockData :  public QObject, public Serialize
 {
+friend class UCM;
     Q_OBJECT
 public:
     enum{
@@ -102,25 +102,23 @@ public:
 private:
     QMutex mutex;
 
-    string userCfgFile;
-    Json::Value root;
-
     StockRuntimeDB db;
     StockIdDB idb;
-
     std::stringstream sinaHttpStream;
 
     void showErrorMessage(QString errStr);
+    STATUS addId(QString id);
+    STATUS removeId(QString id);
 public:
     StockData(QObject *parent = 0);
     ~StockData();
 
+    /* TODO: Do it by UCM */
     STATUS updateInfo(const char* string);
-    STATUS addId(QString &id);
-    STATUS removeId(QString id);
     STATUS topId(QString id);
     STATUS hightlightId(QString id);
 
+    /* get interface */
     StockRuntimeDB* getDB();
     StockIdDB* getIDB();
 
@@ -129,9 +127,6 @@ public:
     Json::Value serialize();
     STATUS unSerialize(Json::Value &val);
     std::string getNodeName();
-
-    STATUS saveUserConfig();
-    STATUS loadUserConfig();
 signals:
     void sig_idbChanged();
 };

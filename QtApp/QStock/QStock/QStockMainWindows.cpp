@@ -10,6 +10,7 @@
 #include "Data/StockData.h"
 #include "Dialog/AboutDialog.h"
 #include "Quote/DateRange.h"
+#include "includes.h"
 
 QStockMainWindows::QStockMainWindows(QWidget *parent) :
     QMainWindow(parent),
@@ -17,10 +18,18 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    g_getUcm()->registerFor(this,ISUBSCRIBER_ID_QSTOCK_MAIN_WINDOWS,this->objectName());
+
     ui->runtimeTableWidget->horizontalHeader()->setStretchLastSection(true);
     ui->runtimeTableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
-    stock_data.loadUserConfig();
+    stock_data = NULL;
+    stock_data = g_getUcm()->getStockData();
+    assert(stock_data != NULL);
+
+    history_db = NULL;
+    history_db = g_getUcm()->getHistoryDB();
+    assert(history_db != NULL);
 
     view_setting.falling = Qt::darkGreen;
     view_setting.rising = Qt::red;
@@ -34,7 +43,7 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     ui->progressBar->setMaximum(100);
     ui->progressBar->setValue(fetchCnt);
 
-    connect(&stock_data,SIGNAL(sig_idbChanged()),this,SLOT(slot_idbChanged()));
+    connect(stock_data,SIGNAL(sig_idbChanged()),this,SLOT(slot_idbChanged()));
 
     sysTimer = new QTimer(this);
     connect(sysTimer,SIGNAL(timeout()),this,SLOT(slot_sysTimeFreshed()));
@@ -44,9 +53,10 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(sinaAgent, SIGNAL(httpDone(bool)),this, SLOT(slot_sinaHttpDone(bool)));
     connect(sinaAgent, SIGNAL(dataReadProgress(int,int)),this, SLOT(slot_sinaDataReadProgress(int,int)));
     connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(slot_sinaReadyRead(QByteArray)));
-    sinaAgent->setIdb(stock_data.getIDB());
+    sinaAgent->setIdb(stock_data->getIDB());
 
     yahooAgent = new YahooHttpAgent;
+    connect(yahooAgent,SIGNAL(downloadDone(QString,QString)),this,SLOT(slot_yahooHttpDownloadDone(QString,QString)));
 
     ui->runtimeTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     runtimePopMenu = new QMenu(ui->runtimeTableWidget);
@@ -82,7 +92,8 @@ QStockMainWindows::~QStockMainWindows()
     yahooAgent->terminate();
     yahooAgent->wait(200);
 
-    stock_data.saveUserConfig();
+    g_getUcm()->unRegisterFor(this);
+
     delete sinaAgent;
     delete ui;
 }
@@ -90,8 +101,8 @@ QStockMainWindows::~QStockMainWindows()
 /*!!! TODO:  clean these codes, its not gentle !!! */
 void QStockMainWindows::updateRuntimeInfo()
 {
-    StockRuntimeDB* db = stock_data.getDB();
-    StockIdDB* idb = stock_data.getIDB();
+    StockRuntimeDB* db = stock_data->getDB();
+    StockIdDB* idb = stock_data->getIDB();
     StockRuntimeDB::iterator it = db->begin();
     StockIdDB::iterator itIdb = idb->begin();
 
@@ -195,13 +206,23 @@ void QStockMainWindows::fetchStockData()
     sinaAgent->fetchStockData();
 }
 
+STATUS QStockMainWindows::loadSymbolHistory(QString symbol)
+{
+    ui->widget_quoteWaves->loadSymbolHistory(symbol);
+    return STATUS_OK;
+}
+
+STATUS QStockMainWindows::loadSymbolHistory()
+{
+    ui->widget_quoteWaves->loadSymbolHistory();
+    return STATUS_OK;
+}
+
 void QStockMainWindows::on_pushButtonAddCode_clicked()
 {
     QString id = ui->lineEditAddCode->text();
-    if(stock_data.addId(id) == STATUS_OK){
-        ui->lineEditAddCode->clear();
-        fetchStockData();
-    }
+    Message msg(STOCK_DATA_CHGED,this->id,MSG_FLAGS_NOTIFY_ALL,id,MSG_OP_ADD);
+    g_getUcm()->post(msg);
 }
 
 void QStockMainWindows::slot_sinaHttpDone(bool )
@@ -215,13 +236,13 @@ void QStockMainWindows::slot_sinaDataReadProgress(int , int )
         fetchCnt = 1;
     }
     ui->progressBar->setValue(fetchCnt);
-    ui->statusBar->showMessage(QString("Fetched ")+QString::number(fetchCnt)+" times");
+    //ui->statusBar->showMessage(QString("Fetched ")+QString::number(fetchCnt)+" times");
 }
 
 void QStockMainWindows::slot_sinaReadyRead(QByteArray bytes)
 {
-    if(stock_data.updateInfo(bytes.data()) == STATUS_OK){
-        StockIdDB* idb = stock_data.getIDB();
+    if(stock_data->updateInfo(bytes.data()) == STATUS_OK){
+        StockIdDB* idb = stock_data->getIDB();
 
         updateRuntimeInfo();
         if(ui->comboBox_watchList->count() != idb->size()){
@@ -232,6 +253,13 @@ void QStockMainWindows::slot_sinaReadyRead(QByteArray bytes)
     }
 }
 
+void QStockMainWindows::slot_yahooHttpDownloadDone(QString symbol, QString filename)
+{
+    loadSymbolHistory(symbol);
+    debug_print(DBG_DEBUG, "Yahooo history file %s download done",symbol.toStdString().c_str());
+    ui->statusBar->showMessage(QString("Yahooo history of ")+symbol+QString(" download to ")+filename);
+}
+
 void QStockMainWindows::slot_sysTimeFreshed()
 {
     fetchStockData();
@@ -239,8 +267,8 @@ void QStockMainWindows::slot_sysTimeFreshed()
 
 void QStockMainWindows::slot_idbChanged()
 {
-    StockIdDB* idb = stock_data.getIDB();
-    StockRuntimeDB* db = stock_data.getDB();
+    StockIdDB* idb = stock_data->getIDB();
+    StockRuntimeDB* db = stock_data->getDB();
     StockRuntimeDB::iterator db_it;
     QString id;
     QString name;
@@ -270,9 +298,8 @@ void QStockMainWindows::on_actionAbout_triggered()
 
 void QStockMainWindows::on_action_SaveWatchList_triggered()
 {
-    stock_data.saveUserConfig();
-    QMessageBox::information(NULL, "Save", "Saved User Watch List to ./user.conf Succeed",
-                             QMessageBox::Ok, QMessageBox::Ok);
+    Message msg(STOCK_DATA_SAVE,this->id,MSG_FLAGS_NOTIFY_ALL,0);
+    g_getUcm()->post(msg);
 }
 
 void QStockMainWindows::slot_runtimeDelAction()
@@ -281,8 +308,8 @@ void QStockMainWindows::slot_runtimeDelAction()
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
             QTableWidgetItem* item = ui->runtimeTableWidget->item(lastSelRow,RUNTIME_COL_KEY);
             if(item){
-                stock_data.removeId(item->text());
-                ui->runtimeTableWidget->removeRow(lastSelRow);
+                Message msg(STOCK_DATA_CHGED,this->id,MSG_FLAGS_NOTIFY_ALL,item->text(),MSG_OP_DEL);
+                g_getUcm()->post(msg);
             }
         }
     }
@@ -294,7 +321,7 @@ void QStockMainWindows::slot_runtimeTopAction()
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
             QTableWidgetItem* item = ui->runtimeTableWidget->item(lastSelRow,RUNTIME_COL_KEY);
             if(item){
-                stock_data.topId(item->text());
+                stock_data->topId(item->text());
                 item->setBackground(view_setting.topBkg);
             }
         }
@@ -307,7 +334,7 @@ void QStockMainWindows::slot_runtimeHlAction()
         if(lastSelRow < ui->runtimeTableWidget->rowCount()){
             QTableWidgetItem* item = ui->runtimeTableWidget->item(lastSelRow,RUNTIME_COL_KEY);
             if(item){
-                if(stock_data.hightlightId(item->text()) == STATUS_OK){
+                if(stock_data->hightlightId(item->text()) == STATUS_OK){
                     if(item->backgroundColor() == view_setting.hightlightBkg){
                         item->setBackground(Qt::white);
                     }else{
@@ -326,7 +353,7 @@ void QStockMainWindows::slot_runtimeDetailAction()
             QTableWidgetItem* item = ui->runtimeTableWidget->item(lastSelRow,RUNTIME_COL_KEY);
             if(item){
                 QDateTime date_end = QDateTime::currentDateTime();
-                QDateTime date_start = date_end.addDays(0-YEAR_1);
+                QDateTime date_start = date_end.addDays(0-DAYS_OF_YEAR);
                 DateRange rang(date_start.date(),date_end.date());
                 /* show detail */
                 yahooAgent->downloadQuotes(item->text(),rang);
@@ -378,4 +405,64 @@ void QStockMainWindows::on_pushButton_detailQuotes_clicked()
 void QStockMainWindows::on_pushButton_Position_clicked()
 {
     ui->stackedWidget->setCurrentIndex(STACK_WIDGET_INDEX_POSITIONS);
+}
+
+
+QObject *QStockMainWindows::getQobject()
+{
+    return this;
+}
+
+STATUS QStockMainWindows::on_STOCK_DATA_CHGED(Message &msg)
+{
+    switch(msg.mhdr.op){
+    case MSG_OP_ADD:
+        ui->lineEditAddCode->clear();
+        fetchStockData();
+        break;
+    case MSG_OP_DEL:
+        ui->runtimeTableWidget->removeRow(lastSelRow);
+        break;
+    default:
+        break;
+    }
+    return STATUS_OK;
+}
+
+int QStockMainWindows::handleMsg(Message &msg)
+{
+    return ISubscriber::handleMsg(msg);
+}
+
+
+STATUS QStockMainWindows::on_STOCK_DATA_SAVE(Message &)
+{
+    QMessageBox::information(NULL, "Save", "Saved User Watch List to ./user.conf Succeed",
+                             QMessageBox::Ok, QMessageBox::Ok);
+    return STATUS_OK;
+}
+
+
+void QStockMainWindows::on_comboBox_watchList_currentIndexChanged(int index)
+{
+    if(index < 0)
+        return ;
+    if(!ui->comboBox_watchList->isVisible())
+        return ;
+    StockIdDB* idb = stock_data->getIDB();
+    if(idb){
+        if(index < idb->size()){
+            QString symbol = idb->at(index);
+            STATUS ret = history_db->tryToInsertItem(symbol);
+            if(ret == STATUS_ERR_EXISTED || ret == STATUS_OK){
+                loadSymbolHistory(symbol);
+            }else if(ret != STATUS_OK){
+                QDateTime date_end = QDateTime::currentDateTime();
+                QDateTime date_start = date_end.addDays(0-DAYS_OF_YEAR);
+                DateRange rang(date_start.date(),date_end.date());
+                yahooAgent->downloadQuotes(symbol,rang);
+                ui->statusBar->showMessage(QString("Yahooo history of ")+symbol+QString(" is downloading..."));
+            }
+        }
+    }
 }

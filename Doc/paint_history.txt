@@ -1,0 +1,3 @@
+1.最低价格minPrice
+2.最高价格maxPrice
+3.日期计数

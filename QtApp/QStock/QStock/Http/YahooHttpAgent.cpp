@@ -3,20 +3,20 @@
 
 #include <QDir>
 
-void YahooHttpAgent::appendToDownloadList(QString &url, QString &filename)
+void YahooHttpAgent::appendToDownloadList(QString symbol,QString &url, QString &filename)
 {
     DownloadListItem item;
     item.url = url;
     item.filename = filename;
+    item.symbol = symbol;
     downloadList.append(item);
 }
 
 YahooHttpAgent::YahooHttpAgent()
 {
-    //s=002065.sz&a=08&b=25&c=2010&d=09&e=8&f=2010&g=d","002065.sz.csv"
-
-    urlPrefix = QString("http://ichart.yahoo.com/table.csv?");
-    downloadDir = QString("./Downloads");
+    //real-chart.finance.yahoo.com/table.csv?s=002065.SZ&a=09&b=23&c=2014&d=11&e=20&f=2014&g=d&ignore=.csv
+    urlPrefix = QString("http://real-chart.finance.yahoo.com/table.csv?");
+    downloadDir = QuoteTools::getDownloadDir();
 
     QDir dir;
     if(! dir.exists(downloadDir) ) {
@@ -32,32 +32,31 @@ YahooHttpAgent::~YahooHttpAgent()
     }
 }
 
-STATUS YahooHttpAgent::downloadQuotes(QString key, DateRange& rang)
+STATUS YahooHttpAgent::downloadQuotes(QString symbol, DateRange& rang)
 {
     QString url = urlPrefix;
-    QString filename = this->downloadDir+"/"+key+".csv";
-    QString s = QuoteTools::KeyA2Yahoo(key);
+    QString filename = this->downloadDir+"/"+QuoteTools::genFilename(symbol);
+    QString s = QuoteTools::symbolA2Yahoo(symbol);
 
     if(s == QString::null)
         return STATUS_FAILED;
-
     url.append("s=");
     url.append(s);
     url.append("&a=");
-    url.append(QString::number(rang.sMonth));
+    url.append(QString::number(rang.sMonth-1));
     url.append("&b=");
     url.append(QString::number(rang.sDay));
     url.append("&c=");
     url.append(QString::number(rang.sYear));
     url.append("&d=");
-    url.append(QString::number(rang.eMonth));
+    url.append(QString::number(rang.eMonth-1));
     url.append("&e=");
     url.append(QString::number(rang.eDay));
     url.append("&f=");
     url.append(QString::number(rang.eYear));
     url.append("&g=d&ignore=.csv");
 
-    appendToDownloadList(url,filename);
+    appendToDownloadList(symbol,url,filename);
     if(!this->isRunning()){
         this->start();
     }
@@ -68,14 +67,10 @@ STATUS YahooHttpAgent::downloadQuotes(QString key, DateRange& rang)
 void YahooHttpAgent::run()
 {
     DownloadListItem item;
-    if(!this->downloadList.isEmpty()){
+    while(!this->downloadList.isEmpty()){
         item = this->downloadList.first();
         curl.downloadURL(item.url.toStdString().c_str(),item.filename.toStdString().c_str());
         this->downloadList.removeFirst();
+        emit downloadDone(item.symbol,item.filename);
     }
-}
-
-void YahooHttpAgent::slot_downloadDone(int)
-{
-
 }

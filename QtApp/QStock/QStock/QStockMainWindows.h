@@ -16,6 +16,7 @@
 #include "Data/HistoryDB.h"
 #include "Http/QSinaHttpAgent.h"
 #include "Http/YahooHttpAgent.h"
+#include "Ucm/isubscriber.h"
 
 typedef struct _ViewSetting{
     QColor rising;
@@ -30,7 +31,8 @@ namespace Ui {
 class QStockMainWindows;
 }
 
-class QStockMainWindows : public QMainWindow
+class QStockMainWindows : public QMainWindow ,
+                          public ISubscriber
 {
     Q_OBJECT
 
@@ -60,6 +62,8 @@ private:
     };
     void updateRuntimeInfo();
     void fetchStockData();
+    STATUS loadSymbolHistory(QString symbol);
+    STATUS loadSymbolHistory();
 private slots:
     void on_pushButtonAddCode_clicked();
 
@@ -67,6 +71,7 @@ private slots:
     void slot_sinaHttpDone(bool);
     void slot_sinaDataReadProgress(int,int);
     void slot_sinaReadyRead(QByteArray);
+    void slot_yahooHttpDownloadDone(QString,QString);
 
     void slot_sysTimeFreshed();
     void slot_idbChanged();
@@ -83,12 +88,15 @@ private slots:
     void on_pushButton_Position_clicked();
     void on_actionAbout_triggered();
 
+    void on_comboBox_watchList_currentIndexChanged(int index);
+
 private:
     Ui::QStockMainWindows *ui;
     int fetchCnt;
 
     /* DB */
-    StockData stock_data;
+    StockData* stock_data;
+    HistoryDB* history_db;
 
     /* view setting*/
     ViewSetting view_setting;
@@ -114,6 +122,16 @@ protected:
     // QWidget interface
 protected:
     void keyPressEvent(QKeyEvent *);
+
+    // ISubscriber interface
+public:
+    QObject *getQobject();
+
+protected:
+    STATUS on_STOCK_DATA_CHGED(Message &);
+    STATUS on_STOCK_DATA_SAVE(Message &);
+protected slots:
+    int handleMsg(Message &msg);
 };
 
 #endif // QSTOCKMAINWINDOWS_H
