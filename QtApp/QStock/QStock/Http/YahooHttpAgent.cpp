@@ -64,6 +64,21 @@ STATUS YahooHttpAgent::downloadQuotes(QString symbol, DateRange& rang)
     return STATUS_OK;
 }
 
+bool YahooHttpAgent::isDownloading(QString symbol)
+{
+    if(downloadList.isEmpty()){
+        return false;
+    }
+    DownloadList::iterator it = downloadList.begin();
+    for(;it != downloadList.end(); it++){
+        if((*it).symbol == symbol){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void YahooHttpAgent::run()
 {
     DownloadListItem item;

@@ -8,21 +8,21 @@
 #include "CurlHttpAgent.h"
 #include "Quote/DateRange.h"
 
+typedef struct _DownloadListItem{
+    QString symbol;
+    QString url;
+    QString filename;
+}DownloadListItem;
+typedef QList<DownloadListItem> DownloadList;
+
 class YahooHttpAgent : public QThread
 {
     Q_OBJECT
 private:
-    typedef struct _DownloadListItem{
-        QString symbol;
-        QString url;
-        QString filename;
-    }DownloadListItem;
-
     QString urlPrefix;
     QString downloadDir;
 
-    QList<DownloadListItem> downloadList;
-
+    DownloadList downloadList;
     CurlHttpAgent curl;
     void appendToDownloadList(QString symbol, QString& url, QString& filename);
 public:
@@ -30,6 +30,7 @@ public:
     ~YahooHttpAgent();
 
     STATUS downloadQuotes(QString symbol, DateRange &rang);
+    bool isDownloading(QString symbol);
 protected:
     void run();
 signals:

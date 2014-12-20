@@ -83,6 +83,8 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(ui->runtimeTableWidget,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(slot_tblCustomContextMenuRequested(QPoint)));
 
     fetchStockData();
+
+    ui->widget_wavesfooter->hide();
 }
 
 QStockMainWindows::~QStockMainWindows()
@@ -228,15 +230,19 @@ STATUS QStockMainWindows::checkAndLoadSymbolHistory()
     if(idb){
         if(index < idb->size()){
             QString symbol = idb->at(index);
-            STATUS ret = history_db->tryToInsertItem(symbol);
-            if(ret == STATUS_ERR_EXISTED || ret == STATUS_OK){
-                loadSymbolHistory(symbol);
-            }else if(ret != STATUS_OK){
-                QDateTime date_end = QDateTime::currentDateTime();
-                QDateTime date_start = date_end.addDays(0-DAYS_OF_YEAR);
-                DateRange rang(date_start.date(),date_end.date());
-                yahooAgent->downloadQuotes(symbol,rang);
-                ui->statusBar->showMessage(QString("Yahooo history of ")+symbol+QString(" is downloading..."));
+            if(yahooAgent->isDownloading(symbol)){
+                return STATUS_FAILED;
+            }else{
+                STATUS ret = history_db->tryToInsertItem(symbol);
+                if(ret == STATUS_ERR_EXISTED || ret == STATUS_OK){
+                    loadSymbolHistory(symbol);
+                }else if(ret != STATUS_OK){
+                    QDateTime date_end = QDateTime::currentDateTime();
+                    QDateTime date_start = date_end.addDays(0-DAYS_OF_YEAR);
+                    DateRange rang(date_start.date(),date_end.date());
+                    yahooAgent->downloadQuotes(symbol,rang);
+                    ui->statusBar->showMessage(QString("Yahooo history of ")+symbol+QString(" is downloading..."));
+                }
             }
         }
     }

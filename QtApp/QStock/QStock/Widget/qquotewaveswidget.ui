@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>20</number>
+    <number>22</number>
    </property>
    <property name="topMargin">
     <number>0</number>
@@ -41,7 +41,7 @@
    <item>
     <widget class="QLabel" name="labelQuoteHistoryInfo">
      <property name="text">
-      <string>TextLabel</string>
+      <string/>
      </property>
     </widget>
    </item>

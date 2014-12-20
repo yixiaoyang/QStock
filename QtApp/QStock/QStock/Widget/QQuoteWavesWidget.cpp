@@ -53,7 +53,7 @@ void QQuoteWavesWidget::setDays(int value)
     xCnt = value;
 }
 
-STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol)
+STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol )
 {
     this->symbol = _symbol;
 
@@ -162,6 +162,8 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     double priceDiffVal = history_stats.maxClose - history_stats.minClose;
     double price = 0.00;
 
+    int splitDays = DAYS_OF_MONTH;
+
     YahooHistoryItem item;
 
     if(this->symbol.isEmpty()){
@@ -189,9 +191,16 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
                         QString::number(price,'f',2));
         }
         /* paint dot */
-        p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
+        p->setPen(QPen(priceColor, 2, Qt::SolidLine, Qt::FlatCap));
         p->setBrush(bPrice);
         paintLastItemsCnt = xCnt;
+
+        if(xCnt >= 500){
+            splitDays = DAYS_OF_3MONTH;
+        }
+        if(xCnt >= 2000){
+            splitDays = DAYS_OF_6MONTH;
+        }
         for(int index = paintLastItemsCnt-1, count = 0; index >= 0; index--,count++){
             item = history_items->at(count);
 
@@ -205,13 +214,14 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
             if(count != 0){
                 p->drawLine(dotX,dotY,dotLastX,dotLastY);
             }
-            if(count % DAYS_OF_MONTH == 0){
+
+            if(count % splitDays == 0){
                 dateStr = item.date.toString("yyyy-MM-dd");
                 p->drawText(dotX-60,zero_point.y()+h+textH, dateStr);
 
                 p->setPen(QPen(gridColor, 1, Qt::DotLine, Qt::FlatCap));
                 p->drawLine(dotX,zero_point.y(),dotX,zero_point.y()+h);
-                p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
+                p->setPen(QPen(priceColor, 2, Qt::SolidLine, Qt::FlatCap));
             }
 
             dotLastX = dotX;
@@ -219,7 +229,7 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
 
             if(last_pos_index == count){
                 paint_last_quote(p,dotX,dotY,item);
-                p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
+                p->setPen(QPen(priceColor, 2, Qt::SolidLine, Qt::FlatCap));
                 p->setBrush(bPrice);
             }
         }
@@ -235,7 +245,7 @@ void QQuoteWavesWidget::paint_last_quote(QPainter *p, int x, int y, YahooHistory
     static QColor colorCursor = Qt::red;
     static QBrush bBkg( Qt::black );
     QFont font = QApplication::font();
-    static int font_size = 14;
+    static int font_size = 12;
     int old_font_size = font.pointSize();
     static int textW = 0;
     static const int textH = 30;
@@ -256,11 +266,9 @@ void QQuoteWavesWidget::paint_last_quote(QPainter *p, int x, int y, YahooHistory
     p->setBackgroundMode(Qt::OpaqueMode);
     p->setBackground(bBkg);
     p->setBrush(bText);
-
     font.setPointSize(font_size);
     font.setBold(true);
     p->setFont(font);
-
     p->setPen(QPen(textColor, 1, Qt::SolidLine, Qt::FlatCap));
 
     textW = font_size*last_pos_str.length();
@@ -273,8 +281,8 @@ void QQuoteWavesWidget::paint_last_quote(QPainter *p, int x, int y, YahooHistory
                     textW,textH,
                     Qt::AlignLeft|Qt::AlignBottom,last_pos_str);
     }
-    p->setBackgroundMode(Qt::TransparentMode);
 
+    p->setBackgroundMode(Qt::TransparentMode);
     font.setPointSize(old_font_size);
     font.setBold(false);
     p->setFont(font);
