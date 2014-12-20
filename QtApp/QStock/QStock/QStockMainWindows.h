@@ -64,6 +64,7 @@ private:
     void fetchStockData();
     STATUS loadSymbolHistory(QString symbol);
     STATUS loadSymbolHistory();
+    STATUS checkAndLoadSymbolHistory();
 private slots:
     void on_pushButtonAddCode_clicked();
 

@@ -218,6 +218,31 @@ STATUS QStockMainWindows::loadSymbolHistory()
     return STATUS_OK;
 }
 
+STATUS QStockMainWindows::checkAndLoadSymbolHistory()
+{
+    int index = ui->comboBox_watchList->currentIndex();
+    StockIdDB* idb = NULL;
+    if(index < 0)
+        return STATUS_ERR_NOT_EXISTED;
+    idb = stock_data->getIDB();
+    if(idb){
+        if(index < idb->size()){
+            QString symbol = idb->at(index);
+            STATUS ret = history_db->tryToInsertItem(symbol);
+            if(ret == STATUS_ERR_EXISTED || ret == STATUS_OK){
+                loadSymbolHistory(symbol);
+            }else if(ret != STATUS_OK){
+                QDateTime date_end = QDateTime::currentDateTime();
+                QDateTime date_start = date_end.addDays(0-DAYS_OF_YEAR);
+                DateRange rang(date_start.date(),date_end.date());
+                yahooAgent->downloadQuotes(symbol,rang);
+                ui->statusBar->showMessage(QString("Yahooo history of ")+symbol+QString(" is downloading..."));
+            }
+        }
+    }
+    return STATUS_OK;
+}
+
 void QStockMainWindows::on_pushButtonAddCode_clicked()
 {
     QString id = ui->lineEditAddCode->text();
@@ -375,7 +400,6 @@ void QStockMainWindows::slot_tblCustomContextMenuRequested(QPoint point)
 void QStockMainWindows::contextMenuEvent(QContextMenuEvent *event)
 {
     return QMainWindow::contextMenuEvent(event);
-
 }
 
 
@@ -399,6 +423,7 @@ void QStockMainWindows::on_pushButton_myWatching_clicked()
 
 void QStockMainWindows::on_pushButton_detailQuotes_clicked()
 {
+    checkAndLoadSymbolHistory();
     ui->stackedWidget->setCurrentIndex(STACK_WIDGET_INDEX_DETAILS);
 }
 
@@ -443,26 +468,7 @@ STATUS QStockMainWindows::on_STOCK_DATA_SAVE(Message &)
 }
 
 
-void QStockMainWindows::on_comboBox_watchList_currentIndexChanged(int index)
+void QStockMainWindows::on_comboBox_watchList_currentIndexChanged(int )
 {
-    if(index < 0)
-        return ;
-    if(!ui->comboBox_watchList->isVisible())
-        return ;
-    StockIdDB* idb = stock_data->getIDB();
-    if(idb){
-        if(index < idb->size()){
-            QString symbol = idb->at(index);
-            STATUS ret = history_db->tryToInsertItem(symbol);
-            if(ret == STATUS_ERR_EXISTED || ret == STATUS_OK){
-                loadSymbolHistory(symbol);
-            }else if(ret != STATUS_OK){
-                QDateTime date_end = QDateTime::currentDateTime();
-                QDateTime date_start = date_end.addDays(0-DAYS_OF_YEAR);
-                DateRange rang(date_start.date(),date_end.date());
-                yahooAgent->downloadQuotes(symbol,rang);
-                ui->statusBar->showMessage(QString("Yahooo history of ")+symbol+QString(" is downloading..."));
-            }
-        }
-    }
+    checkAndLoadSymbolHistory();
 }

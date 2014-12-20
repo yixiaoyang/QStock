@@ -73,6 +73,7 @@ STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol)
     if_paint_quote = true;
     if_paint_gridding = true;
 
+    update();
     return STATUS_OK;
 }
 
