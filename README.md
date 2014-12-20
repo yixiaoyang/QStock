@@ -1,4 +1,4 @@
 QStock
 ======
 
-Stock analysis app with Qt and python, working in multi plotforms.
+Quotes analysis app with Qt and python, working on multi plotforms.
