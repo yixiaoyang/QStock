@@ -41,12 +41,16 @@ private:
 
     /* view */
     bool if_paint_gridding;
+    bool if_paint_quote;
+
     QPoint zero_point;
 
     int space_to_edge;
     int grid_date_width;
     QPoint point_text;
     int text_width;
+
+    int last_pos_index;
 
     /* data */
     int xCnt;
@@ -58,6 +62,8 @@ protected:
     void paintEvent(QPaintEvent *);
     void paint_gridding(QPainter *p);
     void paint_history(QPainter *p);
+    void paint_last_quote(QPainter *p, int x, int y, YahooHistoryItem &item);
+    void handlemouseEvent(QMouseEvent *);
 
     // ISubscriber interface
 public:
@@ -65,6 +71,12 @@ public:
 
 protected slots:
     int handleMsg(Message &msg);
+
+    // QWidget interface
+protected:
+    void mouseMoveEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
 };
 
 #endif // QQUOTEWAVESWIDGET_H

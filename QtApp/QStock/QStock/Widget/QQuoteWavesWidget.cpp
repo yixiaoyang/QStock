@@ -1,7 +1,11 @@
 #include "QQuoteWavesWidget.h"
 #include "ui_qquotewaveswidget.h"
 
+#include <QFont>
+#include <QApplication>
+#include <QMouseEvent>
 #include "includes.h"
+#include "Quote/QuoteTools.h"
 
 QQuoteWavesWidget::QQuoteWavesWidget(QWidget *parent) :
     QWidget(parent),
@@ -18,6 +22,8 @@ QQuoteWavesWidget::QQuoteWavesWidget(QWidget *parent) :
     history_items = NULL;
 
     if_paint_gridding = true;
+    if_paint_quote = false;
+
     space_to_edge = 20;
     grid_date_width = 5;
     zero_point.setX(space_to_edge);
@@ -28,6 +34,8 @@ QQuoteWavesWidget::QQuoteWavesWidget(QWidget *parent) :
     point_text.setX(50);
     point_text.setY(50);
     text_width = 200;
+
+    last_pos_index = -1;
 }
 
 QQuoteWavesWidget::~QQuoteWavesWidget()
@@ -60,7 +68,11 @@ STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol)
 
         history_stats = history_db->getYahooHistoryStats(this->symbol);
     }
-       update();
+    update();
+
+    if_paint_quote = true;
+    if_paint_gridding = true;
+
     return STATUS_OK;
 }
 
@@ -71,22 +83,23 @@ STATUS QQuoteWavesWidget::loadSymbolHistory()
     return STATUS_OK;
 }
 
-void QQuoteWavesWidget::paintEvent(QPaintEvent *)
+void QQuoteWavesWidget::paintEvent(QPaintEvent *e)
 {
     QPainter paint(this);
     if(if_paint_gridding){
         paint_gridding(&paint);
     }
-
-    paint_history(&paint);
-
+    if(if_paint_quote){
+        paint_history(&paint);
+    }
     paint.end();
+    return QWidget::paintEvent(e);
 }
 
 void QQuoteWavesWidget::paint_gridding(QPainter *p)
 {
-    int w = this->width()-this->space_to_edge*2;
-    int h = this->height()-this->space_to_edge*2;
+    int w = this->width()-(this->space_to_edge<<1);
+    int h = this->height()-(this->space_to_edge<<1);
     double percent = 0.0;
     int paintedDot = 0;
     int start = 0;
@@ -123,20 +136,20 @@ void QQuoteWavesWidget::paint_gridding(QPainter *p)
 
 void QQuoteWavesWidget::paint_history(QPainter *p)
 {
-    QBrush bText( Qt::darkYellow );
-    QBrush bPrice( Qt::darkBlue );
-    QColor textColor = QColor(Qt::darkGreen);
-    QColor priceColor = QColor(Qt::darkBlue);
-    QColor gridColor = QColor(Qt::gray);
+    static QBrush bText( Qt::darkYellow );
+    static QBrush bPrice( Qt::darkBlue );
+    static QColor textColor = Qt::darkGreen;
+    static QColor priceColor = Qt::darkBlue;
+    static QColor gridColor = Qt::gray;
 
-    int w = this->width()-this->space_to_edge*2;
-    int h = this->height()-this->space_to_edge*2;
+    int w = this->width()-(this->space_to_edge<<1);
+    int h = this->height()-(this->space_to_edge<<1);
     int priceH = 0;
     int paintLastItemsCnt = 0;
     double percent = 0.00;
     int eachPriceH = 0;
 
-    const int priceSpace = 5;
+    const int priceSpace = 12;
     const int textH = 12;
     QString dateStr;
 
@@ -146,6 +159,7 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     int dotLastY = 0;
 
     double priceDiffVal = history_stats.maxClose - history_stats.minClose;
+    double price = 0.00;
 
     YahooHistoryItem item;
 
@@ -157,37 +171,29 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
         if(history_items == NULL){
             return ;
         }
-#if 0
-        QString statsStr("Stats maxClose ");
-        statsStr = statsStr+QString::number(history_stats.maxClose);
-        statsStr = statsStr+QString(",minClose ");
-        statsStr = statsStr+QString::number(history_stats.minClose);
-
-        p->setBrush(b1);
-        p->setPen(QPen(textColor, 1, Qt::SolidLine, Qt::FlatCap));
-        p->drawText(point_text,QString("History Data size ")+QString::number(history_items->size()));
-        p->drawText(point_text.x(),point_text.y()+20,statsStr);
-#endif
-
         /* paint price line */
-        eachPriceH = (((double)h)/yCnt);
-        priceH = h - (((double)h)/yCnt)*2;
-        p->setPen(QPen(textColor, 1, Qt::DashDotLine, Qt::FlatCap));
-        p->drawLine(zero_point.x(),  zero_point.y()+eachPriceH,
-                    zero_point.x()+w,zero_point.y()+eachPriceH);
-        p->drawText(zero_point.x()+priceSpace,zero_point.y()+eachPriceH-priceSpace,
-                    QString::number(history_stats.maxClose,'f',2));
-        p->drawLine(zero_point.x(),  zero_point.y()+h-eachPriceH,
-                    zero_point.x()+w,zero_point.y()+h-eachPriceH);
-        p->drawText(zero_point.x()+priceSpace,zero_point.y()+h-eachPriceH+textH+priceSpace,
-                    QString::number(history_stats.minClose,'f',2));
-
+        eachPriceH = (((double)h)/yCnt)+0.5;
+        p->setPen(QPen(textColor, 1, Qt::DotLine, Qt::FlatCap));
+        for(int line = 1; line < yCnt; line++){
+            priceH = (((double)h)/yCnt)*line+0.5;
+            percent = ((double)(line-1))/(yCnt-2);
+            price = history_stats.maxClose - (percent)*priceDiffVal;
+            p->drawLine(zero_point.x(),  zero_point.y()+priceH,
+                        zero_point.x()+w,zero_point.y()+priceH);
+            p->drawText(zero_point.x()+priceSpace,zero_point.y()+priceH-priceSpace,
+                        50,12,Qt::AlignLeft,
+                        QString::number(price,'f',2));
+            p->drawText(zero_point.x()+w-54,zero_point.y()+priceH-priceSpace,
+                        50,12,Qt::AlignRight,
+                        QString::number(price,'f',2));
+        }
         /* paint dot */
         p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
         p->setBrush(bPrice);
         paintLastItemsCnt = xCnt;
         for(int index = paintLastItemsCnt-1, count = 0; index >= 0; index--,count++){
             item = history_items->at(count);
+
             /* paint each dot */
             percent = 1 - (((double)count)/paintLastItemsCnt);
             dotX = zero_point.x()+(int)(percent*w);
@@ -209,6 +215,94 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
 
             dotLastX = dotX;
             dotLastY = dotY;
+
+            if(last_pos_index == count){
+                paint_last_quote(p,dotX,dotY,item);
+                p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
+                p->setBrush(bPrice);
+            }
+        }
+    }
+
+}
+
+void QQuoteWavesWidget::paint_last_quote(QPainter *p, int x, int y, YahooHistoryItem& item)
+{
+    static QBrush bText( Qt::yellow );
+    static QBrush bCursor( Qt::red );
+    static QColor textColor = Qt::yellow;
+    static QColor colorCursor = Qt::red;
+    static QBrush bBkg( Qt::black );
+    QFont font = QApplication::font();
+    static int font_size = 14;
+    int old_font_size = font.pointSize();
+    static int textW = 0;
+    static const int textH = 30;
+
+    QPoint last_pos(x,y);
+    QString last_pos_str = QString::number(item.close,'f',2);
+    int w = this->width()-(this->space_to_edge<<1);
+    int h = this->height()-(this->space_to_edge<<1);
+
+    p->setBrush(bCursor);
+    p->setPen(QPen(colorCursor, 1, Qt::SolidLine, Qt::FlatCap));
+    p->drawLine(zero_point.x(),zero_point.y()+last_pos.y()-space_to_edge,
+                zero_point.x()+w,zero_point.y()+last_pos.y()-space_to_edge);
+    p->drawLine(zero_point.x()+last_pos.x()-space_to_edge,zero_point.y(),
+                zero_point.x()+last_pos.x()-space_to_edge,zero_point.y()+h);
+    p->drawRect(QRect(last_pos.x()-4,last_pos.y()-4,8,8));
+
+    p->setBackgroundMode(Qt::OpaqueMode);
+    p->setBackground(bBkg);
+    p->setBrush(bText);
+
+    font.setPointSize(font_size);
+    font.setBold(true);
+    p->setFont(font);
+
+    p->setPen(QPen(textColor, 1, Qt::SolidLine, Qt::FlatCap));
+
+    textW = font_size*last_pos_str.length();
+    if(last_pos.x() > w-100){
+        p->drawText(last_pos.x()-textW-1,last_pos.y()-textH,
+                    textW,textH,
+                    Qt::AlignRight|Qt::AlignBottom,last_pos_str);
+    }else{
+        p->drawText(last_pos.x()+1,last_pos.y()-textH,
+                    textW,textH,
+                    Qt::AlignLeft|Qt::AlignBottom,last_pos_str);
+    }
+    p->setBackgroundMode(Qt::TransparentMode);
+
+    font.setPointSize(old_font_size);
+    font.setBold(false);
+    p->setFont(font);
+}
+
+void QQuoteWavesWidget::handlemouseEvent(QMouseEvent *event)
+{
+    if(history_items != NULL){
+        int w = this->width()-(this->space_to_edge<<1);
+        int h = this->height()-(this->space_to_edge<<1);
+        QPoint pos = event->pos();
+        last_pos_index = -1;
+
+        if((pos.x() >= zero_point.x() ) && (pos.y() >= zero_point.y())
+                                        && (pos.x() <= zero_point.x()+w )
+                                        && (pos.y() <= zero_point.y())+h ){
+            if(history_items->size() > 0){
+                YahooHistoryItem item;
+                double percent = 1-((double)pos.x()-this->space_to_edge)/w;
+                int index = percent*xCnt+0.5;
+                if(index < history_items->size()){
+                    item = history_items->at(index);
+                    ui->labelQuoteHistoryInfo->setText(QuoteTools::yahooHistoryItem2InfoString(item));
+
+                    /* record and repaint it */
+                    last_pos_index = index;
+                    update();
+                }
+            }
         }
     }
 }
@@ -221,4 +315,21 @@ QObject *QQuoteWavesWidget::getQobject()
 int QQuoteWavesWidget::handleMsg(Message &msg)
 {
     return ISubscriber::handleMsg(msg);
+}
+
+void QQuoteWavesWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    handlemouseEvent(event);
+}
+
+void QQuoteWavesWidget::mouseReleaseEvent(QMouseEvent *)
+{
+    last_pos_index = -1;
+    update();
+}
+
+
+void QQuoteWavesWidget::mousePressEvent(QMouseEvent *event)
+{
+    handlemouseEvent(event);
 }

@@ -25,7 +25,8 @@
 	border-width:1px;
 	border-style:solid;
 	border-color: rgb(200, 200, 200);
-}</string>
+}
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -217,8 +218,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>98</width>
-          <height>246</height>
+          <width>118</width>
+          <height>535</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -677,7 +678,25 @@
                 </widget>
                </item>
                <item>
-                <widget class="QQuoteWavesWidget" name="widget_quoteWaves" native="true"/>
+                <widget class="QQuoteWavesWidget" name="widget_quoteWaves" native="true">
+                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                 </layout>
+                </widget>
                </item>
                <item>
                 <widget class="QWidget" name="widget_wavesfooter" native="true">
