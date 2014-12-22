@@ -478,3 +478,14 @@ void QStockMainWindows::on_comboBox_watchList_currentIndexChanged(int )
 {
     checkAndLoadSymbolHistory();
 }
+
+
+void QStockMainWindows::closeEvent(QCloseEvent *)
+{
+    g_getUcm()->saveUserConfig();
+}
+
+void QStockMainWindows::on_comboBox_waveView_currentIndexChanged(int index)
+{
+    ui->widget_quoteWaves->viewChged(index);
+}

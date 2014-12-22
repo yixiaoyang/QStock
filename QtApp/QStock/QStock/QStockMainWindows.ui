@@ -87,7 +87,7 @@
           <x>0</x>
           <y>0</y>
           <width>118</width>
-          <height>535</height>
+          <height>525</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -219,7 +219,7 @@
           <x>0</x>
           <y>0</y>
           <width>118</width>
-          <height>535</height>
+          <height>525</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -651,6 +651,20 @@
                    </widget>
                   </item>
                   <item>
+                   <widget class="QComboBox" name="comboBox_waveView">
+                    <item>
+                     <property name="text">
+                      <string>K Line</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Time Index Chart</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QComboBox" name="comboBox_wavesDatetome">
                     <item>
                      <property name="text">
@@ -820,7 +834,7 @@
      <x>0</x>
      <y>0</y>
      <width>1052</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_O">

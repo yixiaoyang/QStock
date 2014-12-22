@@ -183,7 +183,7 @@ Json::Value StockData::serialize()
     QString ids;
     for(int i =0; i< idb.size(); i++){
         ids += idb[i];
-        ids += ",";
+        ids += QString(",");
     }
     ids.remove(ids.length()-1,1);
     idbVal["idb"]=ids.toStdString();
