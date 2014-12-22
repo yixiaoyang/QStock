@@ -22,6 +22,10 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
 
     ui->runtimeTableWidget->horizontalHeader()->setStretchLastSection(true);
     ui->runtimeTableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_myPositionHistorys->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_myPositionHistorys->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_myPositions->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_myPositions->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     stock_data = NULL;
     stock_data = g_getUcm()->getStockData();
@@ -59,6 +63,9 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(yahooAgent,SIGNAL(downloadDone(QString,QString)),this,SLOT(slot_yahooHttpDownloadDone(QString,QString)));
 
     ui->runtimeTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->tableWidget_myPositionHistorys->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->tableWidget_myPositions->setContextMenuPolicy(Qt::CustomContextMenu);
+
     runtimePopMenu = new QMenu(ui->runtimeTableWidget);
     runtimeTopAction = new QAction("Place On Top ",this);
     runtimeDelAction = new QAction("Remove ",this);
@@ -497,4 +504,10 @@ void QStockMainWindows::closeEvent(QCloseEvent *)
 void QStockMainWindows::on_comboBox_waveView_currentIndexChanged(int index)
 {
     ui->widget_quoteWaves->viewChged(index);
+}
+
+
+void QStockMainWindows::on_pushButton_calendar_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(STACK_WIDGET_INDEX_CALENDAR);
 }

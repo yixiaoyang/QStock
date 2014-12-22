@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     Ucm/ipublisher.cpp \
     Ucm/isubscriber.cpp \
     Ucm/message.cpp \
-    Ucm/ucm.cpp
+    Ucm/ucm.cpp \
+    Widget/QuoteCalendarWidget.cpp
 
 HEADERS  += QStockMainWindows.h \
     types.h\
@@ -64,11 +65,13 @@ HEADERS  += QStockMainWindows.h \
     Ucm/isubscriber.h \
     Ucm/message.h \
     Ucm/ucm.h \
-    includes.h
+    includes.h \
+    Widget/QuoteCalendarWidget.h
 
 FORMS    += QStockMainWindows.ui \
     Dialog/AboutDialog.ui \
-    Widget/qquotewaveswidget.ui
+    Widget/qquotewaveswidget.ui \
+    Widget/QuoteCalendarWidget.ui
 
 RESOURCES += \
     resources/iconRes.qrc

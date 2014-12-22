@@ -87,7 +87,7 @@
           <x>0</x>
           <y>0</y>
           <width>118</width>
-          <height>525</height>
+          <height>535</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -165,7 +165,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="pushButton_calendar">
            <property name="text">
             <string>日历</string>
            </property>
@@ -219,7 +219,7 @@
           <x>0</x>
           <y>0</y>
           <width>118</width>
-          <height>525</height>
+          <height>535</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -475,7 +475,7 @@
                <bool>true</bool>
               </property>
               <property name="sortingEnabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <attribute name="horizontalHeaderCascadingSectionResizes">
                <bool>true</bool>
@@ -490,7 +490,7 @@
                <bool>true</bool>
               </attribute>
               <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-               <bool>true</bool>
+               <bool>false</bool>
               </attribute>
               <column>
                <property name="text">
@@ -800,7 +800,277 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="page_positions"/>
+          <widget class="QWidget" name="page_positions">
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QTabWidget" name="tabWidget">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="tab">
+               <attribute name="title">
+                <string>我的持仓</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_11">
+                <item>
+                 <widget class="QTableWidget" name="tableWidget_myPositions">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="autoScrollMargin">
+                   <number>16</number>
+                  </property>
+                  <property name="gridStyle">
+                   <enum>Qt::SolidLine</enum>
+                  </property>
+                  <attribute name="horizontalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <row>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </row>
+                  <column>
+                   <property name="text">
+                    <string>Code</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Name</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Date</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Count</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Buy</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Sell</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Volume</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <item row="0" column="0">
+                   <property name="text">
+                    <string>sz00001</string>
+                   </property>
+                  </item>
+                  <item row="0" column="1">
+                   <property name="text">
+                    <string>深圳指数</string>
+                   </property>
+                  </item>
+                  <item row="0" column="2">
+                   <property name="text">
+                    <string>1989-11-23</string>
+                   </property>
+                  </item>
+                  <item row="0" column="3">
+                   <property name="text">
+                    <string>-1000</string>
+                   </property>
+                  </item>
+                  <item row="0" column="4">
+                   <property name="text">
+                    <string>19.56</string>
+                   </property>
+                  </item>
+                  <item row="0" column="5">
+                   <property name="text">
+                    <string>20.56</string>
+                   </property>
+                  </item>
+                  <item row="0" column="6">
+                   <property name="text">
+                    <string>1956</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_2">
+               <attribute name="title">
+                <string>买卖历史</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <item>
+                 <widget class="QTableWidget" name="tableWidget_myPositionHistorys">
+                  <attribute name="horizontalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <row>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </row>
+                  <column>
+                   <property name="text">
+                    <string>Code</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Name</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Date</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Count</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Buy</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Sell</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Volume</string>
+                   </property>
+                   <property name="textAlignment">
+                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                   </property>
+                  </column>
+                  <item row="0" column="0">
+                   <property name="text">
+                    <string>sz00001</string>
+                   </property>
+                  </item>
+                  <item row="0" column="1">
+                   <property name="text">
+                    <string>深圳指数</string>
+                   </property>
+                  </item>
+                  <item row="0" column="2">
+                   <property name="text">
+                    <string>1989-11-23</string>
+                   </property>
+                  </item>
+                  <item row="0" column="3">
+                   <property name="text">
+                    <string>-1000</string>
+                   </property>
+                  </item>
+                  <item row="0" column="4">
+                   <property name="text">
+                    <string>19.56</string>
+                   </property>
+                  </item>
+                  <item row="0" column="5">
+                   <property name="text">
+                    <string>20.56</string>
+                   </property>
+                  </item>
+                  <item row="0" column="6">
+                   <property name="text">
+                    <string>1956</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="page_calendar">
+           <layout class="QVBoxLayout" name="verticalLayout_12">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QuoteCalendarWidget" name="widget_calendar" native="true"/>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -834,7 +1104,7 @@
      <x>0</x>
      <y>0</y>
      <width>1052</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_O">
@@ -876,6 +1146,12 @@
    <class>QQuoteWavesWidget</class>
    <extends>QWidget</extends>
    <header>./Widget/QQuoteWavesWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QuoteCalendarWidget</class>
+   <extends>QWidget</extends>
+   <header>./Widget/QuoteCalendarWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

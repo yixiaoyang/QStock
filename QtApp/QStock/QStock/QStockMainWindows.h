@@ -90,8 +90,10 @@ private slots:
     void on_actionAbout_triggered();
 
     void on_comboBox_watchList_currentIndexChanged(int index);
-
     void on_comboBox_waveView_currentIndexChanged(int index);
+
+
+    void on_pushButton_calendar_clicked();
 
 private:
     Ui::QStockMainWindows *ui;
