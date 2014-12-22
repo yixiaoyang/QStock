@@ -157,6 +157,9 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     int dotY = 0;
     int dotLastX = 0;
     int dotLastY = 0;
+    int cursorX = 0;
+    int cursorY = 0;
+    int cursorIndex = 0;
 
     double priceDiffVal = history_stats.maxClose - history_stats.minClose;
     double price = 0.00;
@@ -253,11 +256,16 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
             dotLastY = dotY;
 
             if(last_pos_index == count){
-                paint_last_quote(p,dotX,dotY,item);
-                p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
-                p->setBrush(bPrice);
+                cursorIndex = count;
+                cursorX = dotX;
+                cursorY = dotY;
             }
         }
+
+        item = history_items->at(cursorIndex);
+        paint_last_quote(p,cursorX,cursorY,item);
+        p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
+        p->setBrush(bPrice);
     }
 
 }
