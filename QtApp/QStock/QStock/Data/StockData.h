@@ -83,6 +83,8 @@ typedef struct _StockInfo{
     int hands;
     double adj;
 
+    double lastCurrent;
+
     /* bool */
     bool isHl;
 }StockInfo;

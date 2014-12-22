@@ -36,6 +36,7 @@ STATUS StockData::updateInfo(const char* string)
     QString item;
 
     memset(&info,0,sizeof(StockInfo));
+    info.lastCurrent = -1.00;
 
     for(int cnt = 0; cnt < list.count(); cnt++){
         item = list.at(cnt);
@@ -99,6 +100,7 @@ STATUS StockData::updateInfo(const char* string)
                 it.value().close = info.close;
                 it.value().volume = info.volume;
                 it.value().hands = info.hands;
+                it.value().lastCurrent = it.value().current;
                 it.value().current = info.current;
                 it.value().adj = info.adj;
             }

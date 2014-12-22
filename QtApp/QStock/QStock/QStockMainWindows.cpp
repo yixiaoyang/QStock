@@ -153,6 +153,15 @@ void QStockMainWindows::updateRuntimeInfo()
         if(info.isHl){
             item->setBackground(view_setting.hightlightBkg);
         }
+        if(info.lastCurrent > 0){
+            if(info.lastCurrent < info.current){
+                item->setBackgroundColor(Qt::green);
+            }else if(info.lastCurrent == info.current){
+                item->setBackgroundColor(Qt::transparent);
+            }else{
+                item->setBackgroundColor(Qt::red);
+            }
+        }
 
         item = new QTableWidgetItem(QString::number(info.open,'f',2));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
