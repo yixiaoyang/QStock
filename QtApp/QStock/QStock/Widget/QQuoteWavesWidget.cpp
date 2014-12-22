@@ -22,7 +22,8 @@ QQuoteWavesWidget::QQuoteWavesWidget(QWidget *parent) :
     history_items = NULL;
 
     if_paint_gridding = true;
-    if_paint_quote = false;
+    if_paint_quote = true;
+    if_paint_kline = true;
 
     space_to_edge = 20;
     grid_date_width = 5;
@@ -69,10 +70,6 @@ STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol )
         history_stats = history_db->getYahooHistoryStats(this->symbol);
     }
     update();
-
-    if_paint_quote = true;
-    if_paint_gridding = true;
-
     update();
     return STATUS_OK;
 }
@@ -143,6 +140,8 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     static QColor priceColor = Qt::darkBlue;
     static QColor gridColor = Qt::gray;
 
+    int kDotY[KDOT_MAX];
+
     int w = this->width()-(this->space_to_edge<<1);
     int h = this->height()-(this->space_to_edge<<1);
     int priceH = 0;
@@ -150,7 +149,7 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     double percent = 0.00;
     int eachPriceH = 0;
 
-    const int priceSpace = 12;
+    const int priceSpace = 15;
     const int textH = 12;
     QString dateStr;
 
@@ -158,6 +157,9 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     int dotY = 0;
     int dotLastX = 0;
     int dotLastY = 0;
+    int cursorX = 0;
+    int cursorY = 0;
+    int cursorIndex = 0;
 
     double priceDiffVal = history_stats.maxClose - history_stats.minClose;
     double price = 0.00;
@@ -184,14 +186,14 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
             p->drawLine(zero_point.x(),  zero_point.y()+priceH,
                         zero_point.x()+w,zero_point.y()+priceH);
             p->drawText(zero_point.x()+priceSpace,zero_point.y()+priceH-priceSpace,
-                        50,12,Qt::AlignLeft,
+                        80,16,Qt::AlignLeft,
                         QString::number(price,'f',2));
-            p->drawText(zero_point.x()+w-54,zero_point.y()+priceH-priceSpace,
-                        50,12,Qt::AlignRight,
+            p->drawText(zero_point.x()+w-90,zero_point.y()+priceH-priceSpace,
+                        80,16,Qt::AlignRight,
                         QString::number(price,'f',2));
         }
         /* paint dot */
-        p->setPen(QPen(priceColor, 2, Qt::SolidLine, Qt::FlatCap));
+        p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
         p->setBrush(bPrice);
         paintLastItemsCnt = xCnt;
 
@@ -208,41 +210,104 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
             percent = 1 - (((double)count)/paintLastItemsCnt);
             dotX = zero_point.x()+(int)(percent*w);
 
-            percent = ((item.close-history_stats.minClose)/priceDiffVal);
-            dotY = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
+            if(if_paint_kline){
+                percent = ((item.high-history_stats.minClose)/priceDiffVal);
+                kDotY[KDOT_HIGH] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
 
-            if(count != 0){
-                p->drawLine(dotX,dotY,dotLastX,dotLastY);
+                percent = ((item.low-history_stats.minClose)/priceDiffVal);
+                kDotY[KDOT_LOW] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
+
+                percent = ((item.close-history_stats.minClose)/priceDiffVal);
+                kDotY[KDOT_OPEN_CLOSE1] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
+
+                percent = ((item.open-history_stats.minClose)/priceDiffVal);
+                kDotY[KDOT_OPEN_CLOSE2] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
+
+                kDotY[KDOT_RISING] = 1;
+
+                dotY = kDotY[KDOT_OPEN_CLOSE1];
+                if(item.close < item.open){
+                    kDotY[KDOT_RISING] = 0;
+
+                    dotY = kDotY[KDOT_OPEN_CLOSE2];
+                    kDotY[KDOT_OPEN_CLOSE2] = kDotY[KDOT_OPEN_CLOSE1];
+                    kDotY[KDOT_OPEN_CLOSE1] = dotY;
+                }
+                paint_kline(p,dotX,kDotY);
+            }else{
+                percent = ((item.close-history_stats.minClose)/priceDiffVal);
+                dotY = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
+                if(count != 0){
+                    p->drawLine(dotX,dotY,dotLastX,dotLastY);
+                }
             }
 
             if(count % splitDays == 0){
+                p->setPen(QPen(textColor, 1, Qt::SolidLine, Qt::FlatCap));
                 dateStr = item.date.toString("yyyy-MM-dd");
                 p->drawText(dotX-60,zero_point.y()+h+textH, dateStr);
 
                 p->setPen(QPen(gridColor, 1, Qt::DotLine, Qt::FlatCap));
                 p->drawLine(dotX,zero_point.y(),dotX,zero_point.y()+h);
-                p->setPen(QPen(priceColor, 2, Qt::SolidLine, Qt::FlatCap));
+                p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
             }
 
             dotLastX = dotX;
             dotLastY = dotY;
 
             if(last_pos_index == count){
-                paint_last_quote(p,dotX,dotY,item);
-                p->setPen(QPen(priceColor, 2, Qt::SolidLine, Qt::FlatCap));
-                p->setBrush(bPrice);
+                cursorIndex = count;
+                cursorX = dotX;
+                cursorY = dotY;
             }
         }
+
+        item = history_items->at(cursorIndex);
+        paint_last_quote(p,cursorX,cursorY,item);
+        p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
+        p->setBrush(bPrice);
     }
 
+}
+
+void QQuoteWavesWidget::paint_kline(QPainter *p, int dotX, int *dotYs)
+{
+    static QColor kLineColor = QColor(QRgb(0x606060));
+    static QColor kRisingColor = Qt::red;
+    static QColor kFallingColor = Qt::darkGreen;
+    static QBrush kLineBrush( kLineColor );
+    static QBrush kRisingBrush( kRisingColor );
+    static QBrush kFallingBrush( kFallingColor );
+
+    int w = this->width()-(this->space_to_edge<<1);
+    int eachKlineW = (((double)w)/xCnt);
+
+    if(eachKlineW > 2){
+        eachKlineW -= 2;
+    }
+
+    p->setPen(QPen(kLineColor, 1, Qt::SolidLine, Qt::FlatCap));
+    p->setBrush(kLineBrush);
+    p->drawLine(dotX, dotYs[KDOT_HIGH],dotX, dotYs[KDOT_LOW]);
+
+    if(dotYs[KDOT_RISING]){
+        p->setPen(QPen(kRisingColor, 1, Qt::SolidLine, Qt::FlatCap));
+        p->setBrush(kRisingBrush);
+    }else{
+        p->setPen(QPen(kFallingColor, 1, Qt::SolidLine, Qt::FlatCap));
+        p->setBrush(kFallingBrush);
+    }
+
+    p->drawRect(dotX-(eachKlineW>>1),dotYs[KDOT_OPEN_CLOSE1],
+                eachKlineW,dotYs[KDOT_OPEN_CLOSE2]-dotYs[KDOT_OPEN_CLOSE1]);
 }
 
 void QQuoteWavesWidget::paint_last_quote(QPainter *p, int x, int y, YahooHistoryItem& item)
 {
     static QBrush bText( Qt::yellow );
-    static QBrush bCursor( Qt::red );
+    static QBrush bCursor( Qt::cyan );
     static QColor textColor = Qt::yellow;
-    static QColor colorCursor = Qt::red;
+    static QColor colorCursor = Qt::black;
     static QBrush bBkg( Qt::black );
     QFont font = QApplication::font();
     static int font_size = 12;
@@ -261,7 +326,7 @@ void QQuoteWavesWidget::paint_last_quote(QPainter *p, int x, int y, YahooHistory
                 zero_point.x()+w,zero_point.y()+last_pos.y()-space_to_edge);
     p->drawLine(zero_point.x()+last_pos.x()-space_to_edge,zero_point.y(),
                 zero_point.x()+last_pos.x()-space_to_edge,zero_point.y()+h);
-    p->drawRect(QRect(last_pos.x()-4,last_pos.y()-4,8,8));
+    p->drawRect(QRect(last_pos.x()-2,last_pos.y()-2,5,5));
 
     p->setBackgroundMode(Qt::OpaqueMode);
     p->setBackground(bBkg);
@@ -342,3 +407,25 @@ void QQuoteWavesWidget::mousePressEvent(QMouseEvent *event)
 {
     handlemouseEvent(event);
 }
+
+void QQuoteWavesWidget::viewChged(int index)
+{
+    switch(index){
+    case WAVE_VIEW_KLINE:
+        if(!if_paint_kline){
+            if_paint_kline=true;
+            update();
+        }
+        break;
+    case WAVE_VIEW_TIME_INDEX:{
+        if(if_paint_kline){
+            if_paint_kline=false;
+            update();
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+

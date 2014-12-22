@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QThread>
 
-#include "data/StockData.h"
+#include "Data/StockData.h"
 #include "Data/HistoryDB.h"
 
 #define USERCONFIG_FILE     "user.conf"

@@ -11,7 +11,6 @@ UCM::UCM() :IPublisher()
 
 UCM::~UCM()
 {
-    this->saveUserConfig();
 }
 
 STATUS UCM::loadUserConfig()

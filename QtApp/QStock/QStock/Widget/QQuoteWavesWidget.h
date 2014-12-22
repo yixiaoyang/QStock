@@ -23,6 +23,15 @@ class QQuoteWavesWidget : public QWidget, public ISubscriber
     Q_OBJECT
 
 public:
+    enum{
+        KDOT_HIGH,
+        KDOT_OPEN_CLOSE1,
+        KDOT_OPEN_CLOSE2,
+        KDOT_LOW,
+        KDOT_RISING,
+        KDOT_MAX
+    };
+
     explicit QQuoteWavesWidget(QWidget *parent = 0);
     ~QQuoteWavesWidget();
 
@@ -31,6 +40,7 @@ public:
 
     STATUS loadSymbolHistory(QString _symbol);
     STATUS loadSymbolHistory();
+    void viewChged(int index);
 private:
     Ui::QQuoteWavesWidget *ui;
 
@@ -42,6 +52,7 @@ private:
     /* view */
     bool if_paint_gridding;
     bool if_paint_quote;
+    bool if_paint_kline;
 
     QPoint zero_point;
 
@@ -62,6 +73,7 @@ protected:
     void paintEvent(QPaintEvent *);
     void paint_gridding(QPainter *p);
     void paint_history(QPainter *p);
+    void paint_kline(QPainter *p, int dotX, int *dotYs);
     void paint_last_quote(QPainter *p, int x, int y, YahooHistoryItem &item);
     void handlemouseEvent(QMouseEvent *);
 
@@ -78,5 +90,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
 };
+
 
 #endif // QQUOTEWAVESWIDGET_H

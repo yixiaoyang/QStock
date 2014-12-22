@@ -91,6 +91,8 @@ private slots:
 
     void on_comboBox_watchList_currentIndexChanged(int index);
 
+    void on_comboBox_waveView_currentIndexChanged(int index);
+
 private:
     Ui::QStockMainWindows *ui;
     int fetchCnt;
@@ -133,6 +135,10 @@ protected:
     STATUS on_STOCK_DATA_SAVE(Message &);
 protected slots:
     int handleMsg(Message &msg);
+
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // QSTOCKMAINWINDOWS_H

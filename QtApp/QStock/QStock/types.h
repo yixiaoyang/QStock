@@ -110,4 +110,10 @@ enum{
     DAYS_OF_3YEAR=DAYS_OF_YEAR*3
 };
 
+enum{
+    WAVE_VIEW_KLINE,
+    WAVE_VIEW_TIME_INDEX,
+    WAVE_VIEW_MAX
+};
+
 #endif /* TYPES_H_ */
