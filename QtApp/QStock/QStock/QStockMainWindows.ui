@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1052</width>
-    <height>656</height>
+    <width>887</width>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,13 +59,13 @@
       <widget class="QToolBox" name="toolBox">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>100</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>120</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
@@ -86,8 +86,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>118</width>
-          <height>535</height>
+          <width>98</width>
+          <height>477</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -218,8 +218,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>118</width>
-          <height>535</height>
+          <width>98</width>
+          <height>477</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -388,6 +388,9 @@
         </property>
         <item>
          <widget class="QStackedWidget" name="stackedWidget">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
           <widget class="QWidget" name="page_runtime">
            <layout class="QVBoxLayout" name="verticalLayout">
             <property name="spacing">
@@ -801,17 +804,32 @@
            </layout>
           </widget>
           <widget class="QWidget" name="page_positions">
-           <layout class="QVBoxLayout" name="verticalLayout_9">
+           <layout class="QVBoxLayout" name="verticalLayout_19">
             <item>
              <widget class="QTabWidget" name="tabWidget">
+              <property name="tabPosition">
+               <enum>QTabWidget::North</enum>
+              </property>
+              <property name="tabShape">
+               <enum>QTabWidget::Rounded</enum>
+              </property>
               <property name="currentIndex">
                <number>0</number>
               </property>
-              <widget class="QWidget" name="tab">
+              <property name="documentMode">
+               <bool>false</bool>
+              </property>
+              <property name="tabsClosable">
+               <bool>false</bool>
+              </property>
+              <property name="movable">
+               <bool>false</bool>
+              </property>
+              <widget class="QWidget" name="tab_position">
                <attribute name="title">
                 <string>我的持仓</string>
                </attribute>
-               <layout class="QVBoxLayout" name="verticalLayout_11">
+               <layout class="QVBoxLayout" name="verticalLayout_20">
                 <item>
                  <widget class="QTableWidget" name="tableWidget_myPositions">
                   <property name="maximumSize">
@@ -930,9 +948,55 @@
                   </item>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QTableWidget" name="tableWidget_myPosProfile">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>120</height>
+                   </size>
+                  </property>
+                  <column>
+                   <property name="text">
+                    <string>市场</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>日盈亏</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>持仓盈亏</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>浮动盈亏</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>收益率</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>市值</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
                </layout>
               </widget>
-              <widget class="QWidget" name="tab_2">
+              <widget class="QWidget" name="tab_positionHis">
                <attribute name="title">
                 <string>买卖历史</string>
                </attribute>
@@ -1047,6 +1111,227 @@
               </widget>
              </widget>
             </item>
+            <item>
+             <widget class="QWidget" name="widget_ops" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <item>
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>操作</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_posOps">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>买入</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>卖出</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_13">
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>股票代码</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_4">
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit_posCode">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="placeholderText">
+                      <string>股票代码</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_posCodeSel">
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <item>
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>买入价</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="doubleSpinBox_posBuy">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_15">
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>卖出价</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="doubleSpinBox_posSell">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_21">
+                 <item>
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>数量</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_posCount">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_17">
+                 <item>
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>佣金（万分之）</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_posAgent">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_18">
+                 <item>
+                  <widget class="QLabel" name="label_8">
+                   <property name="text">
+                    <string>日期</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_posDate">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>今天</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_16">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_AddPosition">
+                   <property name="text">
+                    <string>确定</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="page_calendar">
@@ -1103,7 +1388,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1052</width>
+     <width>887</width>
      <height>21</height>
     </rect>
    </property>

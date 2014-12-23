@@ -26,6 +26,8 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     ui->tableWidget_myPositionHistorys->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     ui->tableWidget_myPositions->horizontalHeader()->setStretchLastSection(true);
     ui->tableWidget_myPositions->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_myPosProfile->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_myPosProfile->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     stock_data = NULL;
     stock_data = g_getUcm()->getStockData();

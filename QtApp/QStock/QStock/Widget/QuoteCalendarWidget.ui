@@ -24,11 +24,6 @@ border-style:outset;
 	border-color: rgb(200, 200, 200);
 }
 
-QCalendarWidget QAbstractItemView 
-{
-	text-aglin:left;
-	selection-color: rgb(0, 200, 0); 
-}
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -74,6 +69,12 @@ QCalendarWidget QAbstractItemView
    </item>
    <item>
     <widget class="QWidget" name="widget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>18</height>
+      </size>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
        <number>0</number>
