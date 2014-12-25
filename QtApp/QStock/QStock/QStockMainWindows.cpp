@@ -513,3 +513,27 @@ void QStockMainWindows::on_pushButton_calendar_clicked()
 {
     ui->stackedWidget->setCurrentIndex(STACK_WIDGET_INDEX_CALENDAR);
 }
+
+void QStockMainWindows::on_comboBox_wavesDatetome_currentIndexChanged(int index)
+{
+    QDate date = QDateTime::currentDateTime().date();
+    bool enable = true;
+    switch(index){
+    case COMBOBOX_RUOTE_DATE_1YEAR:
+        enable = false;
+        break;
+    case COMBOBOX_RUOTE_DATE_6MONTH:
+        date = date.addMonths(-6);
+        break;
+    case COMBOBOX_RUOTE_DATE_3MONTH:
+        date = date.addMonths(-3);
+        break;
+    case COMBOBOX_RUOTE_DATE_1MONTH:
+        date = date.addMonths(-1);
+        break;
+    default:
+        enable = false;
+        break;
+    }
+    ui->widget_quoteWaves->setDateLimited(enable,date);
+}

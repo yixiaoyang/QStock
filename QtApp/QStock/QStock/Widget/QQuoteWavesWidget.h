@@ -35,12 +35,10 @@ public:
     explicit QQuoteWavesWidget(QWidget *parent = 0);
     ~QQuoteWavesWidget();
 
-    int getDays() const;
-    void setDays(int value);
-
     STATUS loadSymbolHistory(QString _symbol);
     STATUS loadSymbolHistory();
     void viewChged(int index);
+    void setDateLimited(bool enable,QDate& date);
 private:
     Ui::QQuoteWavesWidget *ui;
 
@@ -55,6 +53,10 @@ private:
     bool if_paint_kline;
 
     QPoint zero_point;
+
+    bool _dateLimited;
+    QDate _deadDateLine;
+    int _daysCnt;
 
     int space_to_edge;
     int grid_date_width;

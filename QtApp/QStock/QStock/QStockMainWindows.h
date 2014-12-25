@@ -60,6 +60,14 @@ private:
         STACK_WIDGET_INDEX_CALENDAR,
         STACK_WIDGET_INDEX_NOTES
     };
+    enum{
+        COMBOBOX_RUOTE_DATE_1YEAR,
+        COMBOBOX_RUOTE_DATE_6MONTH,
+        COMBOBOX_RUOTE_DATE_3MONTH,
+        COMBOBOX_RUOTE_DATE_1MONTH,
+        COMBOBOX_RUOTE_DATE_MAX
+    };
+
     void updateRuntimeInfo();
     void fetchStockData();
     STATUS loadSymbolHistory(QString symbol);
@@ -94,6 +102,8 @@ private slots:
 
 
     void on_pushButton_calendar_clicked();
+
+    void on_comboBox_wavesDatetome_currentIndexChanged(int index);
 
 private:
     Ui::QStockMainWindows *ui;

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>887</width>
+    <width>912</width>
     <height>598</height>
    </rect>
   </property>
@@ -87,7 +87,7 @@
           <x>0</x>
           <y>0</y>
           <width>98</width>
-          <height>477</height>
+          <height>467</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -219,7 +219,7 @@
           <x>0</x>
           <y>0</y>
           <width>98</width>
-          <height>477</height>
+          <height>467</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -676,17 +676,17 @@
                     </item>
                     <item>
                      <property name="text">
-                      <string>2 Year</string>
+                      <string>6 Months</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
-                      <string>3 Month</string>
+                      <string>3 Months</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
-                      <string>1 Month</string>
+                      <string>1 Months</string>
                      </property>
                     </item>
                    </widget>
@@ -1388,8 +1388,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>887</width>
-     <height>21</height>
+     <width>912</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_O">

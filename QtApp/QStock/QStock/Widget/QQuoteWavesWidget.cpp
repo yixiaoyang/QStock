@@ -30,28 +30,22 @@ QQuoteWavesWidget::QQuoteWavesWidget(QWidget *parent) :
     zero_point.setX(space_to_edge);
     zero_point.setY(space_to_edge);
 
-    xCnt = 120;
-    yCnt = 20;
+    xCnt = 1;
+    yCnt = 1;
     point_text.setX(50);
     point_text.setY(50);
     text_width = 200;
 
     last_pos_index = -1;
+
+    _dateLimited = false;
+    _daysCnt = 0;
 }
 
 QQuoteWavesWidget::~QQuoteWavesWidget()
 {
     g_getUcm()->unRegisterFor(this);
     delete ui;
-}
-int QQuoteWavesWidget::getDays() const
-{
-    return xCnt;
-}
-
-void QQuoteWavesWidget::setDays(int value)
-{
-    xCnt = value;
 }
 
 STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol )
@@ -65,11 +59,12 @@ STATUS QQuoteWavesWidget::loadSymbolHistory(QString _symbol )
     }else{
         int w = this->width()-this->space_to_edge*2;
         xCnt = (w >= history_items->size()) ? history_items->size() : w;
+        if(!_dateLimited)
+            _daysCnt = xCnt;
         yCnt = 20;
 
         history_stats = history_db->getYahooHistoryStats(this->symbol);
     }
-    update();
     update();
     return STATUS_OK;
 }
@@ -116,8 +111,8 @@ void QQuoteWavesWidget::paint_gridding(QPainter *p)
 
     /* x cnt */
     paintedDot = 0;
-    while(paintedDot++ < this->xCnt){
-        percent = ((double)paintedDot)/xCnt;
+    while(paintedDot++ <  this->_daysCnt){
+        percent = ((double)paintedDot)/this->_daysCnt;
         start = (int)(percent * w);
         p->drawLine(zero_point.x()+start,zero_point.y(),zero_point.x()+start,zero_point.y()+grid_date_width);
         p->drawLine(zero_point.x()+start,zero_point.y()+h,zero_point.x()+start,zero_point.y()+h-grid_date_width);
@@ -195,12 +190,12 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
         /* paint dot */
         p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
         p->setBrush(bPrice);
-        paintLastItemsCnt = xCnt;
+        paintLastItemsCnt = _daysCnt;
 
-        if(xCnt >= 500){
+        if(_daysCnt >= 500){
             splitDays = DAYS_OF_3MONTH;
         }
-        if(xCnt >= 2000){
+        if(_daysCnt >= 2000){
             splitDays = DAYS_OF_6MONTH;
         }
         for(int index = paintLastItemsCnt-1, count = 0; index >= 0; index--,count++){
@@ -272,7 +267,7 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
 
 void QQuoteWavesWidget::paint_kline(QPainter *p, int dotX, int *dotYs)
 {
-    static QColor kLineColor = QColor(QRgb(0x606060));
+    static QColor kLineColor = QColor(QRgb(0x000020));
     static QColor kRisingColor = Qt::red;
     static QColor kFallingColor = Qt::darkGreen;
     static QBrush kLineBrush( kLineColor );
@@ -280,7 +275,7 @@ void QQuoteWavesWidget::paint_kline(QPainter *p, int dotX, int *dotYs)
     static QBrush kFallingBrush( kFallingColor );
 
     int w = this->width()-(this->space_to_edge<<1);
-    int eachKlineW = (((double)w)/xCnt);
+    int eachKlineW = (((double)w)/_daysCnt);
 
     if(eachKlineW > 2){
         eachKlineW -= 2;
@@ -367,7 +362,7 @@ void QQuoteWavesWidget::handlemouseEvent(QMouseEvent *event)
             if(history_items->size() > 0){
                 YahooHistoryItem item;
                 double percent = 1-((double)pos.x()-this->space_to_edge)/w;
-                int index = percent*xCnt+0.5;
+                int index = percent*_daysCnt+0.5;
                 if(index < history_items->size()){
                     item = history_items->at(index);
                     ui->labelQuoteHistoryInfo->setText(QuoteTools::yahooHistoryItem2InfoString(item));
@@ -426,6 +421,28 @@ void QQuoteWavesWidget::viewChged(int index)
     }
     default:
         break;
+    }
+}
+
+void QQuoteWavesWidget::setDateLimited(bool enable, QDate &date)
+{
+    this->_dateLimited = enable;
+    this->_deadDateLine = date;
+    if(history_items){
+        if(!enable){
+            this->_daysCnt = history_items->size();
+        }else{
+            YahooHistoryItems::const_iterator it;
+            _daysCnt = 0;
+            for(it = history_items->begin(); it != history_items->end(); it++,_daysCnt++){
+                if((*it).date < date){
+                    break;
+                }
+            }
+        }
+        update();
+    }else{
+        this->_daysCnt = 0;
     }
 }
 
