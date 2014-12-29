@@ -43,7 +43,9 @@ private:
     enum {
         RUNTIME_COL_NAME,
         RUNTIME_COL_KEY,
+#ifdef SHOW_DATE
         RUNTIME_COL_DATE,
+#endif
         RUNTIME_COL_CURRENT,
         RUNTIME_COL_OPEN,
         RUNTIME_COL_HIGH,

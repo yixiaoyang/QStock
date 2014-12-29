@@ -148,14 +148,14 @@ void QStockMainWindows::updateRuntimeInfo()
         if(info.isHl){
             item->setBackground(view_setting.hightlightBkg);
         }
-
+#ifdef SHOW_DATE
         item = new QTableWidgetItem(QString(info.date));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
             item->setBackground(view_setting.hightlightBkg);
         }
-
+#endif
         item = new QTableWidgetItem(QString::number(info.current,'f',2));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
@@ -322,7 +322,7 @@ void QStockMainWindows::slot_idbChanged()
     QString id;
     QString name;
 
-    /* update combobox wathc lisr */
+    /* update combobox watch list */
     ui->comboBox_watchList->clear();
 
     for(int i = 0; i <idb->size(); i++){

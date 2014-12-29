@@ -13,6 +13,7 @@ void StockData::showErrorMessage( QString errStr)
 
 StockData::StockData(QObject* parent) : QObject(parent),Serialize()
 {
+
 }
 
 StockData::~StockData()
@@ -25,6 +26,7 @@ STATUS StockData::updateInfo(const char* string)
     if(!string){
         return STATUS_FAILED;
     }
+    bool isFirstLoading = false;
     QString name;
     QString id;
 
@@ -93,6 +95,15 @@ STATUS StockData::updateInfo(const char* string)
             if(it == db.end()){
                 db.insert(id,info);
             }else{
+                if(it.value().name[0]==0){
+                    isFirstLoading = true;
+                    strncpy(it.value().name,info.name,STOCK_ID_LEN);
+                }
+                if(it.value().id[0]==0)
+                    strncpy(it.value().id,info.id,STOCK_NAME_LEN);
+                if(it.value().date[0]==0)
+                    strncpy(it.value().date, info.date,STOCK_DATE_LEN);
+
                 strncpy(info.date,tokens[SINA_ITEMS_DATE].toStdString().c_str(),STOCK_DATE_LEN);
                 it.value().open = info.open;
                 it.value().high = info.high;
@@ -109,6 +120,9 @@ STATUS StockData::updateInfo(const char* string)
         }
     }
 
+    if(isFirstLoading){
+        emit sig_idbChanged();
+    }
     return STATUS_OK;
 }
 
@@ -183,25 +197,56 @@ Json::Value StockData::serialize()
 {
     Json::Value idbVal;
     QString ids;
+    QString hls;
+    StockRuntimeDB::iterator db_it = db.begin();
+
     for(int i =0; i< idb.size(); i++){
         ids += idb[i];
-        ids += QString(",");
+        ids += ",";
     }
     ids.remove(ids.length()-1,1);
     idbVal["idb"]=ids.toStdString();
+
+    while(db_it != db.end()){
+        if(db_it.value().isHl){
+            hls += db_it.key();
+            hls += ",";
+        }
+        db_it++;
+    }
+    hls.remove(hls.length()-1,1);
+    idbVal["hl"]=hls.toStdString();
     return idbVal;
 }
 
 STATUS StockData::unSerialize(Json::Value &val)
 {
     string idbStr = val["idb"].asString();
+    string hlStr = val["hl"].asString();
+
     QString idsQStr(idbStr.c_str());
+    QString hlQStr(hlStr.c_str());
+
+    StockInfo info;
     if(!idsQStr.isEmpty()){
         QStringList list = idsQStr.split(',',QString::SkipEmptyParts);
         for(int i = 0 ;i <list.size(); i++){
             this->idb.append(list.at(i));
+
+            memset(&info,0,sizeof(StockInfo));
+            this->db.insert(list.at(i),info);
         }
     }
+
+    if(!hlQStr.isEmpty()){
+        QStringList list = hlQStr.split(',',QString::SkipEmptyParts);
+        for(int i = 0; i < list.size(); i++){
+            StockRuntimeDB::iterator db_it = db.find(list.at(i));
+            if(db_it != db.end()){
+                db_it.value().isHl = true;
+            }
+        }
+     }
 
     return STATUS_OK;
 }
