@@ -15,6 +15,8 @@ public:
     explicit QuoteCalendarWidget(QWidget *parent = 0);
     ~QuoteCalendarWidget();
 
+private slots:
+
 private:
     Ui::QuoteCalendarWidget *ui;
 };

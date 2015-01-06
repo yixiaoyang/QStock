@@ -107,6 +107,8 @@ private slots:
 
     void on_comboBox_wavesDatetome_currentIndexChanged(int index);
 
+    void on_runtimeTableWidget_cellDoubleClicked(int row, int column);
+
 private:
     Ui::QStockMainWindows *ui;
     int fetchCnt;

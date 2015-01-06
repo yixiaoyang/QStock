@@ -207,7 +207,11 @@ void QStockMainWindows::updateRuntimeInfo()
             item->setBackground(view_setting.hightlightBkg);
         }
 
-        item = new QTableWidgetItem(QString::number(info.adj*100,'f',4)+"%");
+        if(it.value().showAdjVal){
+            item = new QTableWidgetItem(QString::number(info.adjVal,'f',2));
+        }else{
+            item = new QTableWidgetItem(QString::number(info.adj*100,'f',4)+"%");
+        }
         if(info.adj < 0){
             item->setTextColor(view_setting.falling);
         }else{
@@ -536,4 +540,44 @@ void QStockMainWindows::on_comboBox_wavesDatetome_currentIndexChanged(int index)
         break;
     }
     ui->widget_quoteWaves->setDateLimited(enable,date);
+}
+
+void QStockMainWindows::on_runtimeTableWidget_cellDoubleClicked(int row, int column)
+{
+    if(column == RUNTIME_COL_ADJ){
+        StockRuntimeDB* db = stock_data->getDB();
+        StockIdDB* idb = stock_data->getIDB();
+        StockRuntimeDB::iterator it = db->begin();
+        QString key;
+
+        QTableWidgetItem* item = ui->runtimeTableWidget->item(row,column);
+        if(!item){
+            return ;
+        }
+
+        if(row < idb->size()){
+            key = idb->at(row);
+        }
+
+        it = db->find(key);
+        if(it == db->end()){
+            return;
+        }
+
+        if(it.value().showAdjVal){
+            it.value().showAdjVal = false;
+            item->setText(QString::number(it.value().adj*100,'f',4)+"%");
+        }else{
+            it.value().showAdjVal = true;
+            item->setText(QString::number(it.value().adjVal,'f',2));
+        }
+
+/*
+        if(info.adj < 0){
+            item->setTextColor(view_setting.falling);
+        }else{
+            item->setTextColor(view_setting.rising);
+        }
+*/
+    }
 }

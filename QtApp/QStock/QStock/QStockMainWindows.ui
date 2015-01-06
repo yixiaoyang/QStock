@@ -567,14 +567,6 @@
                 <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                </property>
               </column>
-              <column>
-               <property name="text">
-                <string>detail</string>
-               </property>
-               <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-               </property>
-              </column>
              </widget>
             </item>
            </layout>

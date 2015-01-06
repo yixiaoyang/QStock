@@ -88,8 +88,10 @@ STATUS StockData::updateInfo(const char* string)
             info.current = tokens[SINA_ITEMS_CURRENT].toDouble();
             if(info.open < 0.00001 && info.open > -0.00001){
                 info.adj = 0.0;
+                info.adjVal = 0.0;
             }else{
-                info.adj = (info.current-info.close)/info.close;
+                info.adjVal = info.current-info.close;
+                info.adj = info.adjVal/info.close;
             }
             StockRuntimeDB::iterator it = db.find(id);
             if(it == db.end()){
@@ -114,6 +116,7 @@ STATUS StockData::updateInfo(const char* string)
                 it.value().lastCurrent = it.value().current;
                 it.value().current = info.current;
                 it.value().adj = info.adj;
+                it.value().adjVal = info.adjVal;
             }
         }else{
             continue;

@@ -82,11 +82,13 @@ typedef struct _StockInfo{
     double volume;
     int hands;
     double adj;
+    double adjVal;
 
     double lastCurrent;
 
     /* bool */
     bool isHl;
+    bool showAdjVal;
 }StockInfo;
 
 typedef QMap<QString,StockInfo> StockRuntimeDB;
