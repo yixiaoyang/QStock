@@ -87,7 +87,7 @@
           <x>0</x>
           <y>0</y>
           <width>98</width>
-          <height>467</height>
+          <height>455</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -219,7 +219,7 @@
           <x>0</x>
           <y>0</y>
           <width>98</width>
-          <height>467</height>
+          <height>455</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -391,6 +391,9 @@
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
           <widget class="QWidget" name="page_runtime">
            <layout class="QVBoxLayout" name="verticalLayout">
             <property name="spacing">
@@ -500,7 +503,7 @@
                 <string>Name</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -508,7 +511,7 @@
                 <string>Code</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -516,7 +519,7 @@
                 <string>Current</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -524,7 +527,7 @@
                 <string>Open</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -532,7 +535,7 @@
                 <string>High</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -540,7 +543,7 @@
                 <string>Low</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -548,7 +551,7 @@
                 <string>Close</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -556,7 +559,7 @@
                 <string>Hands</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
               <column>
@@ -564,7 +567,7 @@
                 <string>Adjust</string>
                </property>
                <property name="textAlignment">
-                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                <set>AlignCenter</set>
                </property>
               </column>
              </widget>
@@ -679,25 +682,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QQuoteWavesWidget" name="widget_quoteWaves" native="true">
-                 <layout class="QVBoxLayout" name="verticalLayout_8">
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                 </layout>
-                </widget>
+                <widget class="QQuoteWavesWidget" name="widget_quoteWaves" native="true"/>
                </item>
                <item>
                 <widget class="QWidget" name="widget_wavesfooter" native="true">
@@ -844,7 +829,7 @@
                     <string>Code</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -852,7 +837,7 @@
                     <string>Name</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -860,7 +845,7 @@
                     <string>Date</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -868,7 +853,7 @@
                     <string>Count</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -876,7 +861,7 @@
                     <string>Buy</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -884,7 +869,7 @@
                     <string>Sell</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -892,7 +877,7 @@
                     <string>Volume</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <item row="0" column="0">
@@ -1003,7 +988,7 @@
                     <string>Code</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -1011,7 +996,7 @@
                     <string>Name</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -1019,7 +1004,7 @@
                     <string>Date</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -1027,7 +1012,7 @@
                     <string>Count</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -1035,7 +1020,7 @@
                     <string>Buy</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -1043,7 +1028,7 @@
                     <string>Sell</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <column>
@@ -1051,7 +1036,7 @@
                     <string>Volume</string>
                    </property>
                    <property name="textAlignment">
-                    <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                    <set>AlignCenter</set>
                    </property>
                   </column>
                   <item row="0" column="0">
@@ -1373,7 +1358,7 @@
      <x>0</x>
      <y>0</y>
      <width>912</width>
-     <height>22</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_O">

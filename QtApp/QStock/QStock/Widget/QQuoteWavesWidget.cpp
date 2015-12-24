@@ -257,8 +257,10 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
             }
         }
 
-        item = history_items->at(cursorIndex);
-        paint_last_quote(p,cursorX,cursorY,item);
+        if(history_items->size() > 0){
+            item = history_items->at(cursorIndex);
+            paint_last_quote(p,cursorX,cursorY,item);
+        }
         p->setPen(QPen(priceColor, 1, Qt::SolidLine, Qt::FlatCap));
         p->setBrush(bPrice);
     }

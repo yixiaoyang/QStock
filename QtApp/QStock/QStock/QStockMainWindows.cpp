@@ -39,7 +39,7 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
 
     view_setting.falling = Qt::darkGreen;
     view_setting.rising = Qt::red;
-    view_setting.hightlightBkg = Qt::yellow;
+    view_setting.hightlightBkg = Qt::darkGreen;
     view_setting.topBkg = Qt::darkGreen;
     view_setting.urlArrayCnt = 5;
     view_setting.sysTimerMsec = 5000;
@@ -164,11 +164,11 @@ void QStockMainWindows::updateRuntimeInfo()
         }
         if(info.lastCurrent > 0){
             if(info.lastCurrent < info.current){
-                item->setBackgroundColor(Qt::green);
+                item->setBackgroundColor(Qt::darkGreen);
             }else if(info.lastCurrent == info.current){
                 item->setBackgroundColor(Qt::transparent);
             }else{
-                item->setBackgroundColor(Qt::red);
+                item->setBackgroundColor(Qt::darkRed);
             }
         }
 
@@ -219,9 +219,9 @@ void QStockMainWindows::updateRuntimeInfo()
         }
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
-        if(info.isHl){
+        /*if(info.isHl){
             item->setBackground(view_setting.hightlightBkg);
-        }
+        }*/
     }
 }
 

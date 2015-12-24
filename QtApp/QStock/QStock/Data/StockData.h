@@ -1,7 +1,6 @@
 #ifndef STOCKDATA_H
 #define STOCKDATA_H
 
-#include <QByteArray>
 #include <QString>
 #include <QStringList>
 #include <QMap>
@@ -67,9 +66,12 @@ enum{
 };
 
 typedef struct _StockInfo{
-    char id[STOCK_ID_LEN];
-    char name[STOCK_NAME_LEN];
-    char date[STOCK_DATE_LEN];
+    //char id[STOCK_ID_LEN];
+    //char name[STOCK_NAME_LEN];
+    //char date[STOCK_DATE_LEN];
+    QString id;
+    QString name;
+    QString date;
 
     /* today */
     double current;

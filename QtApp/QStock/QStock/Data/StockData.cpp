@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <QMessageBox>
-
+#include <QDebug>
 static QString l_labelPrefix("var hq_str_");
 
 void StockData::showErrorMessage( QString errStr)
@@ -37,7 +37,6 @@ STATUS StockData::updateInfo(const char* string)
     int end = 0;
     QString item;
 
-    memset(&info,0,sizeof(StockInfo));
     info.lastCurrent = -1.00;
 
     for(int cnt = 0; cnt < list.count(); cnt++){
@@ -76,9 +75,12 @@ STATUS StockData::updateInfo(const char* string)
                 this->removeId(id);
                 continue;
             }
-            strncpy(info.name,name.toStdString().c_str(),STOCK_NAME_LEN);
-            strncpy(info.id,id.toStdString().c_str(),STOCK_ID_LEN);
-            strncpy(info.date,tokens[SINA_ITEMS_DATE].toStdString().c_str(),STOCK_DATE_LEN);
+            info.name = name;
+            info.id = id;
+            info.date = tokens[SINA_ITEMS_DATE];
+            //strncpy(info.name,name.toStdString().c_str(),STOCK_NAME_LEN);
+            //strncpy(info.id,id.toStdString().c_str(),STOCK_ID_LEN);
+            //strncpy(info.date,tokens[SINA_ITEMS_DATE].toStdString().c_str(),STOCK_DATE_LEN);
             info.open = tokens[SINA_ITEMS_TOPEN].toDouble();
             info.high = tokens[SINA_ITEMS_THIGH].toDouble();
             info.low = tokens[SINA_ITEMS_TLOW].toDouble();
@@ -97,16 +99,14 @@ STATUS StockData::updateInfo(const char* string)
             if(it == db.end()){
                 db.insert(id,info);
             }else{
-                if(it.value().name[0]==0){
+                if(it.value().name.length()==0){
                     isFirstLoading = true;
-                    strncpy(it.value().name,info.name,STOCK_ID_LEN);
+                    it.value().name = info.name;
                 }
-                if(it.value().id[0]==0)
-                    strncpy(it.value().id,info.id,STOCK_NAME_LEN);
-                if(it.value().date[0]==0)
-                    strncpy(it.value().date, info.date,STOCK_DATE_LEN);
-
-                strncpy(info.date,tokens[SINA_ITEMS_DATE].toStdString().c_str(),STOCK_DATE_LEN);
+                if(it.value().id.length()==0)
+                    it.value().id = info.id;
+                if(it.value().date.length()==0)
+                    it.value().date = info.date;
                 it.value().open = info.open;
                 it.value().high = info.high;
                 it.value().low = info.low;
@@ -231,12 +231,16 @@ STATUS StockData::unSerialize(Json::Value &val)
     QString hlQStr(hlStr.c_str());
 
     StockInfo info;
+
+    qDebug() << "unserilize begin";
     if(!idsQStr.isEmpty()){
         QStringList list = idsQStr.split(',',QString::SkipEmptyParts);
+        qDebug() << "unserilize size " << list.size();
         for(int i = 0 ;i <list.size(); i++){
+            qDebug() << "unserilize idsQStr append " << list.at(i);
+
             this->idb.append(list.at(i));
 
-            memset(&info,0,sizeof(StockInfo));
             this->db.insert(list.at(i),info);
         }
     }
@@ -244,6 +248,8 @@ STATUS StockData::unSerialize(Json::Value &val)
     if(!hlQStr.isEmpty()){
         QStringList list = hlQStr.split(',',QString::SkipEmptyParts);
         for(int i = 0; i < list.size(); i++){
+            qDebug() << "unserilize hlQStr append " << list.at(i);
+
             StockRuntimeDB::iterator db_it = db.find(list.at(i));
             if(db_it != db.end()){
                 db_it.value().isHl = true;

@@ -16,7 +16,6 @@ CurlHttpAgent::CurlHttpAgent()
 
 void CurlHttpAgent::downloadURL(const char* url, const char* file){
     CURL *curl;
-    CURLcode res;
     FILE *outfile;
     curl = curl_easy_init();
     if(curl)
@@ -27,7 +26,7 @@ void CurlHttpAgent::downloadURL(const char* url, const char* file){
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
-        res = curl_easy_perform(curl);
+        curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(outfile);
     }
