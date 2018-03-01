@@ -156,7 +156,15 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
     int cursorY = 0;
     int cursorIndex = 0;
 
-    double priceDiffVal = history_stats.maxClose - history_stats.minClose;
+    double curMaxClose,curMinClose;
+    if(this->_dateLimited){
+        curMaxClose = history_stats.curMaxClose;
+        curMinClose = history_stats.curMinClose;
+    }else{
+        curMaxClose = history_stats.maxClose;
+        curMinClose = history_stats.minClose;
+    }
+    double priceDiffVal = curMaxClose - curMinClose;
     double price = 0.00;
 
     int splitDays = DAYS_OF_MONTH;
@@ -177,7 +185,7 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
         for(int line = 1; line < yCnt; line++){
             priceH = (((double)h)/yCnt)*line+0.5;
             percent = ((double)(line-1))/(yCnt-2);
-            price = history_stats.maxClose - (percent)*priceDiffVal;
+            price = curMaxClose - (percent)*priceDiffVal;
             p->drawLine(zero_point.x(),  zero_point.y()+priceH,
                         zero_point.x()+w,zero_point.y()+priceH);
             p->drawText(zero_point.x()+priceSpace,zero_point.y()+priceH-priceSpace,
@@ -206,16 +214,16 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
             dotX = zero_point.x()+(int)(percent*w);
 
             if(if_paint_kline){
-                percent = ((item.high-history_stats.minClose)/priceDiffVal);
+                percent = ((item.high-curMinClose)/priceDiffVal);
                 kDotY[KDOT_HIGH] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
 
-                percent = ((item.low-history_stats.minClose)/priceDiffVal);
+                percent = ((item.low-curMinClose)/priceDiffVal);
                 kDotY[KDOT_LOW] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
 
-                percent = ((item.close-history_stats.minClose)/priceDiffVal);
+                percent = ((item.close-curMinClose)/priceDiffVal);
                 kDotY[KDOT_OPEN_CLOSE1] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
 
-                percent = ((item.open-history_stats.minClose)/priceDiffVal);
+                percent = ((item.open-curMinClose)/priceDiffVal);
                 kDotY[KDOT_OPEN_CLOSE2] = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
 
                 kDotY[KDOT_RISING] = 1;
@@ -230,7 +238,7 @@ void QQuoteWavesWidget::paint_history(QPainter *p)
                 }
                 paint_kline(p,dotX,kDotY);
             }else{
-                percent = ((item.close-history_stats.minClose)/priceDiffVal);
+                percent = ((item.close-curMinClose)/priceDiffVal);
                 dotY = zero_point.y() + h - eachPriceH - percent*(h-(eachPriceH<<1));
                 if(count != 0){
                     p->drawLine(dotX,dotY,dotLastX,dotLastY);
@@ -433,13 +441,19 @@ void QQuoteWavesWidget::setDateLimited(bool enable, QDate &date)
     if(history_items){
         if(!enable){
             this->_daysCnt = history_items->size();
+            history_stats.curMaxClose = history_stats.maxClose;
+            history_stats.curMinClose = history_stats.minClose;
         }else{
             YahooHistoryItems::const_iterator it;
             _daysCnt = 0;
+            history_stats.curMaxClose = -1.00;
+            history_stats.curMinClose = 999999999999.00;
             for(it = history_items->begin(); it != history_items->end(); it++,_daysCnt++){
                 if((*it).date < date){
                     break;
                 }
+                history_stats.curMaxClose = history_stats.curMaxClose <= (*it).close ? (*it).close : history_stats.curMaxClose;
+                history_stats.curMinClose = history_stats.curMinClose >= (*it).close ? (*it).close : history_stats.curMinClose;
             }
         }
         update();

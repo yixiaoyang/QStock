@@ -65,7 +65,7 @@ STATUS StockData::updateInfo(const char* string)
                 name = tokens[0];
 
             if(start == end){
-                showErrorMessage(QString("Stock id ")+id+" name "+name+QString(" not existed!"));
+                //showErrorMessage(QString("Stock id ")+id+" name "+name+QString(" not existed!"));
                 this->removeId(id);
                 continue;
             }

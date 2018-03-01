@@ -2,22 +2,24 @@
 #define QHTTPAGENT_H
 
 #include <QThread>
-#include <QHttp>
+#include <QNetworkAccessManager>
 #include <QString>
 #include <QByteArray>
+#include <QList>
 #include "Data/StockData.h"
 
-class QSinaHttpAgent : public QThread
+class QSinaHttpAgent : public QObject
 {
     Q_OBJECT
 private:
-    QHttp *http;
-    QString url;
+    QNetworkAccessManager *http;
     QString host;
 
     StockIdDB* idb;
     int eachFetchCnt;
     void updateUri();
+
+    void request(QString url);
 public:
     QSinaHttpAgent(QString host="");
     ~QSinaHttpAgent();
@@ -25,14 +27,16 @@ public:
     QString uri;
     char sep;
     QByteArray buffer;
+    int requestCount;
 
     STATUS fetchStockData();
     void setIdb(StockIdDB *value);
+    void setHttp(QNetworkAccessManager *value);
+
 private slots:
     /* sina http slot */
-    void slot_httpDone(bool);
-    void on_dataReadProgress(int,int);
-    void on_readyRead(QHttpResponseHeader);
+    void slot_finished(QNetworkReply*);
+
     // QThread interface
 protected:
     void run();

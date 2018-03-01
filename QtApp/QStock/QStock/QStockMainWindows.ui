@@ -87,7 +87,7 @@
           <x>0</x>
           <y>0</y>
           <width>98</width>
-          <height>455</height>
+          <height>467</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -219,7 +219,7 @@
           <x>0</x>
           <y>0</y>
           <width>98</width>
-          <height>455</height>
+          <height>467</height>
          </rect>
         </property>
         <attribute name="icon">
@@ -392,7 +392,7 @@
            <enum>QFrame::NoFrame</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page_runtime">
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -1358,7 +1358,7 @@
      <x>0</x>
      <y>0</y>
      <width>912</width>
-     <height>30</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_O">

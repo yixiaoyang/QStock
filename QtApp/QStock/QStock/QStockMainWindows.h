@@ -2,7 +2,6 @@
 #define QSTOCKMAINWINDOWS_H
 
 #include <QMainWindow>
-#include <QHttp>
 #include <QTimer>
 #include <QMenu>
 #include <QAction>
@@ -11,6 +10,8 @@
 #include <QContextMenuEvent>
 #include <QTableWidgetItem>
 #include <QTextStream>
+#include <QNetworkAccessManager>
+
 
 #include "Data/StockData.h"
 #include "Data/HistoryDB.h"
@@ -101,12 +102,8 @@ private slots:
 
     void on_comboBox_watchList_currentIndexChanged(int index);
     void on_comboBox_waveView_currentIndexChanged(int index);
-
-
     void on_pushButton_calendar_clicked();
-
     void on_comboBox_wavesDatetome_currentIndexChanged(int index);
-
     void on_runtimeTableWidget_cellDoubleClicked(int row, int column);
 
 private:

@@ -1,6 +1,5 @@
 #include "QStockMainWindows.h"
 #include "ui_QStockMainWindows.h"
-#include <QHttp>
 #include <QUrl>
 #include <QMainWindow>
 #include <QTextCodec>
@@ -20,14 +19,22 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
 
     g_getUcm()->registerFor(this,ISUBSCRIBER_ID_QSTOCK_MAIN_WINDOWS,this->objectName());
 
+#if QT_VERSION < 0x050000
+#else
+    ui->runtimeTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_myPositionHistorys->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_myPositions->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_myPosProfile->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+#endif
+
+    //ui->runtimeTableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    //ui->tableWidget_myPositionHistorys->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    //ui->tableWidget_myPositions->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    //ui->tableWidget_myPosProfile->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     ui->runtimeTableWidget->horizontalHeader()->setStretchLastSection(true);
-    ui->runtimeTableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     ui->tableWidget_myPositionHistorys->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidget_myPositionHistorys->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     ui->tableWidget_myPositions->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidget_myPositions->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     ui->tableWidget_myPosProfile->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidget_myPosProfile->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
     stock_data = NULL;
     stock_data = g_getUcm()->getStockData();
@@ -38,9 +45,9 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     assert(history_db != NULL);
 
     view_setting.falling = Qt::darkGreen;
-    view_setting.rising = Qt::red;
-    view_setting.hightlightBkg = Qt::darkGreen;
-    view_setting.topBkg = Qt::darkGreen;
+    view_setting.rising = Qt::darkRed;
+    view_setting.hightlightBkg = Qt::darkGray;
+    view_setting.topBkg = Qt::green;
     view_setting.urlArrayCnt = 5;
     view_setting.sysTimerMsec = 5000;
 
@@ -55,7 +62,8 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
     connect(sysTimer,SIGNAL(timeout()),this,SLOT(slot_sysTimeFreshed()));
     sysTimer->start(view_setting.sysTimerMsec); /*5s*/
 
-    sinaAgent = new QSinaHttpAgent("hq.sinajs.cn");
+
+    sinaAgent = new QSinaHttpAgent("http://hq.sinajs.cn");
     connect(sinaAgent, SIGNAL(httpDone(bool)),this, SLOT(slot_sinaHttpDone(bool)));
     connect(sinaAgent, SIGNAL(dataReadProgress(int,int)),this, SLOT(slot_sinaDataReadProgress(int,int)));
     connect(sinaAgent, SIGNAL(readyRead(QByteArray)),this, SLOT(slot_sinaReadyRead(QByteArray)));
@@ -98,8 +106,8 @@ QStockMainWindows::QStockMainWindows(QWidget *parent) :
 
 QStockMainWindows::~QStockMainWindows()
 {
-    sinaAgent->terminate();
-    sinaAgent->wait(200);
+    //sinaAgent->terminate();
+    //sinaAgent->wait(200);
     yahooAgent->terminate();
     yahooAgent->wait(200);
 
@@ -146,7 +154,7 @@ void QStockMainWindows::updateRuntimeInfo()
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
-            item->setBackground(view_setting.hightlightBkg);
+            //item->setBackground(view_setting.hightlightBkg);
         }
 #ifdef SHOW_DATE
         item = new QTableWidgetItem(QString(info.date));
@@ -164,11 +172,11 @@ void QStockMainWindows::updateRuntimeInfo()
         }
         if(info.lastCurrent > 0){
             if(info.lastCurrent < info.current){
-                item->setBackgroundColor(Qt::darkGreen);
+                item->setBackgroundColor(Qt::green);
             }else if(info.lastCurrent == info.current){
                 item->setBackgroundColor(Qt::transparent);
             }else{
-                item->setBackgroundColor(Qt::darkRed);
+                item->setBackgroundColor(Qt::red);
             }
         }
 
@@ -176,35 +184,35 @@ void QStockMainWindows::updateRuntimeInfo()
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
-            item->setBackground(view_setting.hightlightBkg);
+            //item->setBackground(view_setting.hightlightBkg);
         }
 
         item = new QTableWidgetItem(QString::number(info.high,'f',2));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
-            item->setBackground(view_setting.hightlightBkg);
+            //item->setBackground(view_setting.hightlightBkg);
         }
 
         item = new QTableWidgetItem(QString::number(info.low,'f',2));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
-            item->setBackground(view_setting.hightlightBkg);
+            //item->setBackground(view_setting.hightlightBkg);
         }
 
         item = new QTableWidgetItem(QString::number(info.close,'f',2));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
-            item->setBackground(view_setting.hightlightBkg);
+            //item->setBackground(view_setting.hightlightBkg);
         }
 
         item = new QTableWidgetItem(QString::number(info.hands));
         item->setTextAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
         tblWidget->setItem(cnt,col++,item);
         if(info.isHl){
-            item->setBackground(view_setting.hightlightBkg);
+            //item->setBackground(view_setting.hightlightBkg);
         }
 
         if(it.value().showAdjVal){
@@ -294,7 +302,8 @@ void QStockMainWindows::slot_sinaDataReadProgress(int , int )
 
 void QStockMainWindows::slot_sinaReadyRead(QByteArray bytes)
 {
-    if(stock_data->updateInfo(bytes.data()) == STATUS_OK){
+    QString str = QTextCodec::codecForName("gbk")->toUnicode(bytes);
+    if(stock_data->updateInfo(str.toStdString().c_str()) == STATUS_OK){
         StockIdDB* idb = stock_data->getIDB();
 
         updateRuntimeInfo();
@@ -581,3 +590,4 @@ void QStockMainWindows::on_runtimeTableWidget_cellDoubleClicked(int row, int col
 */
     }
 }
+

@@ -9,6 +9,8 @@ typedef QVector<YahooHistoryItem> YahooHistoryItems;
 typedef struct _HisStatistics{
     double maxClose;
     double minClose;
+    double curMaxClose;
+    double curMinClose;
 }HisStatistics;
 
 class HistoryDBItem
